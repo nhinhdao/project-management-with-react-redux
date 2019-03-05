@@ -57,7 +57,7 @@ class WelcomePage extends Component {
             </Col>
           </Row>
         </TabPane>
-      </TabContent>
+        </TabContent>
       </div>
       );
     }
