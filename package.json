@@ -2,10 +2,20 @@
   "name": "project-management-with-react-redux",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3001/",
   "dependencies": {
-    "react": "^16.8.3",
-    "react-dom": "^16.8.3",
-    "react-scripts": "2.1.5"
+    "bootstrap": "^4.3.1",
+    "dotenv": "^6.2.0",
+    "react": "^16.8.4",
+    "react-bootstrap": "^1.0.0-beta.5",
+    "react-dom": "^16.8.4",
+    "react-redux": "^6.0.1",
+    "react-responsive-carousel": "^3.1.47",
+    "react-scripts": "2.1.5",
+    "reactstrap": "^7.1.0",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0",
+    "semantic-ui": "^2.4.2"
   },
   "scripts": {
     "start": "react-scripts start",

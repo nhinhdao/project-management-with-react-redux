@@ -1,17 +1,14 @@
-.App {
-  text-align: center;
-}
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
+  height: 40px;
   pointer-events: none;
 }
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
+  min-height: 50px;
+  /* display: flex; */
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -27,7 +24,39 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+.RenderSearchData {
+  border: 1px solid black
+}
+
+.iconImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 40%
+}
+
+.scrollit {
+  overflow: auto;
+  height: 85%;
+  width: 100%;
+}
+
+.placeImage {
+  /* max-height: 100%; */
+  max-width: 85%;
+}
+
+.side-crop {
+  max-height: 400px;
+  overflow: hidden;
+}
+
+.side-crop img {
+  max-height: initial;
+  text-indent: -50%
 }
