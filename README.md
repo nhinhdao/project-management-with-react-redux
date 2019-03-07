@@ -78,3 +78,8 @@ import logo from './images/logo.svg';
 <Form.Radio name='status' label='Active' value='1' checked={value === '1'} onChange={this.onChangeStatus} />
 <Form.Radio name='status' label='Completed' value='2' checked={value === '2'} onChange={this.onChangeStatus} />
 <Form.Radio name='status' label='Dismissed' value='3' checked={value === '3'} onChange={this.onChangeStatus} />
+
+<label><input type="radio" name="status" value="0" checked={value==='0'} onChange={this.handleChange}/> Not Started</label>
+<label><input type="radio" name="status" value="1" checked={value==='1'} onChange={this.handleChange}/> Active</label>
+<label><input type="radio" name="status" value="2" checked={value==='2'} onChange={this.handleChange}/> Completed</label>
+<label><input type="radio" name="status" value="3" checked={value==='3'} onChange={this.handleChange}/> Dismissed</label>

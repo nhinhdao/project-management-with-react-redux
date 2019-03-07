@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link} from 'react-router-dom';
+import { getAllUsers } from '../actions/APIsearch';
 import { Sidebar, Menu, Icon, Image } from 'semantic-ui-react';
 import projectmanagementPane from '../images/projectmanagementPane.png';
 import WelcomePage from './WelcomePage';
 import NewProject from '../containers/NewProject';
 import UserInfo from './UserInfo';
+import {connect} from 'react-redux';
 
 /* Add style for main compartment */
 const style = {
@@ -28,6 +30,10 @@ const HomeSizebar = () =>
   </React.Fragment>;
 
 class Homepage extends Component {
+  componentDidMount() {
+    this.props.getAllUsers();
+  }
+
   render() {
     return (
       <div style={style}>
@@ -46,5 +52,10 @@ class Homepage extends Component {
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    getAllUsers: () => dispatch(getAllUsers())
+  }
+}
 
-export default Homepage;
+export default connect(null, mapDispatchToProps)(Homepage);

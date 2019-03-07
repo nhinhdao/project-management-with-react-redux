@@ -1,10 +1,10 @@
-export function getUserInfo(userId) {
-  const url = `/api/v1/users/${userId}`
+export function getAllUsers() {
+  const url = `http://localhost:3001/api/v1/users/`
   return dispatch => {
     dispatch({ type: "LOADING_API" });
     return fetch(url)
       .then(response => response.json())
-      .then(data => dispatch({ type: 'GET_USER_INFO', payload: data }));
+      .then(data => dispatch({ type: 'GET_ALL_USERS', payload: data }));
   }
 }
 
@@ -87,7 +87,6 @@ export function signIn(user) {
       body: JSON.stringify(user)
     }).then(resp => resp.json())
       .then(resp => {
-      debugger
       if (resp) {
         // Update redux sore with return data
         dispatch({type: 'SIGN_IN', resp});
