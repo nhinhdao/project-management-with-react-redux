@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {  Col, Row, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Button, Form, Segment } from 'semantic-ui-react';
 
 class SignInForm extends Component {
   constructor () {
@@ -18,26 +18,36 @@ class SignInForm extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    this.props.handleSubmit(this.state)
+    this.props.handleSignIn(this.state)
     this.setState({username: '', password: ''})
   }
 
   render() {
     return (
-      <Form onSubmit={this.handleSubmit}>
-        <Row form>
-          <Col md={8}>
-            <FormGroup>
-              <Label>Username</Label>
-              <Input type='text' onChange={this.handleChange} name='username' value={this.state.username}></Input><br />
-              <Label>Password</Label>
-              <Input type='text' onChange={this.handleChange} name='password' value={this.state.password}></Input><br />
-            </FormGroup>
-            <Button type='submit' color="info">Sign In</Button>
-          </Col>
-          <Col md={1} />
-        </Row>
-      </Form>
+      <React.Fragment>
+        <Segment>
+          <Form size="large" onSubmit={this.handleSubmit}>
+            <Form.Input
+              fluid
+              icon="user"
+              iconPosition="left"
+              placeholder="Username"
+              onChange={this.handleChange} name='username' value={this.state.username}
+            />
+            <Form.Input 
+              fluid
+              icon="lock"
+              iconPosition="left"
+              placeholder="Password"
+              type="password"
+              onChange={this.handleChange} name='password' value={this.state.password}
+            />
+            <Button typr='submit' color="blue" fluid size="large">
+              Log In
+            </Button>
+          </Form>
+        </Segment>
+      </React.Fragment>
     )
   }
 }

@@ -5,7 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import thunk from 'redux-thunk';
 import rootReducer from './reducers/index';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'semantic-ui-css/semantic.min.css';
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
 

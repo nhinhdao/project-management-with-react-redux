@@ -66,3 +66,10 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+
+import logo from './images/logo.svg';
+<header className="App-header">
+  <img src={logo} className="App-logo" alt="logo" />
+  <span> Project Management </span>
+</header>

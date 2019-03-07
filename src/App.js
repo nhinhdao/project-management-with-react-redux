@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
 import WelcomePage from './components/WelcomePage';
+import Homepage from './components/Homepage';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <span> Project Management </span>
-        </header>
-        <div>
-          <WelcomePage />
-        </div>
+        <Router>
+          <React.Fragment>
+            <Route exact path="/login" component={WelcomePage} />
+              <Route exact path="/" component={Homepage} />
+          </React.Fragment>
+        </Router>
       </div>
     );
   }

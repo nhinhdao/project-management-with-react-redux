@@ -1,76 +1,61 @@
 import React, { Component } from 'react';
 import { signIn, register } from '../actions/APIsearch';
+import projectmanagement from '../images/projectmanagement.png';
 import SignInForm from '../containers/SignInForm';
 import RegisterForm from '../containers/RegisterForm';
-import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
-import classnames from 'classnames';
+import { Image, Grid, Header,  Segment } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 
 class WelcomePage extends Component {
-  state = {
-      activeTab: '1'
-    };
-
-  toggle = tab => {
-    if (this.state.activeTab !== tab) {
-      this.setState({
-        activeTab: tab
-      });
-    }
-  }
+  state = {register: false};
 
   handleSignIn = user => {
-    this.props.signIn(user)
+    this.props.signIn(user);
+    this.props.history.push('/');
   }
 
   handleRegister = user => {
-    this.props.register(user)
+    this.props.register(user);
+    this.props.history.push('/');
+  }
+
+  toggerregister = () => {
+    this.setState({register: !this.state.register})
   }
 
   render() {
     return (
       <div>
-        <Nav tabs>
-        <NavItem>
-          <NavLink className={classnames({ active: this.state.activeTab === '1' })} onClick={() => { this.toggle('1'); }}>
-            <strong>Sign In</strong>
-          </NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink className={classnames({ active: this.state.activeTab === '2' })} onClick={() => { this.toggle('2'); }}>
-            <strong>Register</strong>
-          </NavLink>
-        </NavItem>
-      </Nav>
-      <TabContent activeTab={this.state.activeTab}>
-        <TabPane tabId="1">
-          <Row>
-            <Col sm="12">
-                <SignInForm handleSubmit={this.handleSignIn}/>
-            </Col>
-          </Row>
-        </TabPane>
-        <TabPane tabId="2">
-          <Row>
-            <Col sm="12">
-              <RegisterForm handleSubmit={this.handleRegister}/>
-            </Col>
-          </Row>
-        </TabPane>
-        </TabContent>
+        <Grid centered columns={2}>
+          <Grid.Row></Grid.Row><Grid.Row></Grid.Row>
+          <Grid.Row>
+            <Grid.Column width={7}>
+              <Image centered src={projectmanagement} alt='Project Management Logo'/>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column width={2}>
+              <Segment onClick={this.toggerregister}><Header as="h3" color="blue" textAlign="center">
+              Log In
+            </Header></Segment>
+            </Grid.Column>
+            <Grid.Column width={2}>
+              <Segment onClick={this.toggerregister}><Header as="h3" color="blue" textAlign="center">
+              Register
+            </Header></Segment>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column width={4}>
+              {this.state.register ? <RegisterForm handleRegister={this.handleRegister}/> : <SignInForm handleSignIn={this.handleSignIn}/>}
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
       </div>
-      );
-    }
+    );
+  }
 }
 
-const mapStateToProps = state => {
-  return {
-    user_info: state.current_user.user,
-    projects: state.allProjects.projects,
-    tasks: state.allTasks.tasks
-  };
-}
-  
 const mapDispatchToProps = dispatch => {
   return {
     signIn: user => dispatch(signIn(user)),
@@ -78,4 +63,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WelcomePage);
+export default connect(null, mapDispatchToProps)(WelcomePage);
