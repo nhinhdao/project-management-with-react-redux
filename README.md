@@ -73,3 +73,8 @@ import logo from './images/logo.svg';
   <img src={logo} className="App-logo" alt="logo" />
   <span> Project Management </span>
 </header>
+
+<Form.Radio name='status' label='Not Started' value='0' checked={value === '0'} onChange={this.onChangeStatus} />
+<Form.Radio name='status' label='Active' value='1' checked={value === '1'} onChange={this.onChangeStatus} />
+<Form.Radio name='status' label='Completed' value='2' checked={value === '2'} onChange={this.onChangeStatus} />
+<Form.Radio name='status' label='Dismissed' value='3' checked={value === '3'} onChange={this.onChangeStatus} />

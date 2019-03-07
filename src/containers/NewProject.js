@@ -14,12 +14,14 @@ const options = [
 class NewProject extends Component {
   constructor () {
     super();
-    this.state = {name: '', description: '', status: 0, start_date: new Date(), end_date: new Date(),
+    this.state = {
+      name: '', description: '', status: 0, start_date: new Date(), end_date: new Date(),
       tasks: [{
         content: '',
         users: []
       }]
-    }
+    };
+    this.onChangeStatus = this.onChangeStatus.bind(this)
   }
 
   handleChange = (event) => {
@@ -57,10 +59,10 @@ class NewProject extends Component {
               </Form.Group>
               <Form.Field><label>Status</label></Form.Field>
               <Form.Group inline>
-                <Form.Radio name='status' label='Not Started' value='0' checked={value === '0'} onChange={() => this.onChangeStatus(this)} />
-                <Form.Radio name='status' label='Active' value='1' checked={value === '1'} onChange={() => this.onChangeStatus(this)} />
-                <Form.Radio name='status' label='Completed' value='2' checked={value === '2'} onChange={() => this.onChangeStatus(this)} />
-                <Form.Radio name='status' label='Dismissed' value='3' checked={value === '3'} onChange={() => this.onChangeStatus(this)} />
+                <label><input type="radio" name="status" value="0" checked={value===0} onChange={this.onChangeStatus}/>Not Started</label>
+                <label><input type="radio" name="status" value="1" checked={value===1} onChange={this.onChangeStatus}/>Active</label>
+                <label><input type="radio" name="status" value="2" checked={value===2} onChange={this.onChangeStatus}/>Completed</label>
+                <label><input type="radio" name="status" value="3" checked={value===3} onChange={this.onChangeStatus}/>Dismissed</label>
               </Form.Group>
               <Form.Field>
                 <label>Add Tasks</label>
