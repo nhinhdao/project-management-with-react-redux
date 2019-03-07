@@ -15,7 +15,7 @@ class NewProject extends Component {
   constructor () {
     super();
     this.state = {
-      name: '', description: '', status: 0, start_date: new Date(), end_date: new Date(),
+      name: '', description: '', status: '0', start_date: new Date(), end_date: new Date(),
       tasks: [{
         content: '',
         users: []
@@ -31,7 +31,6 @@ class NewProject extends Component {
 
   onChangeStart = date => this.setState({start_date: date})
   onChangeEnd = date => this.setState({end_date: date})
-  onChangeStatus = event => {debugger}
 
   render() {
     const { value } = this.state
@@ -59,14 +58,14 @@ class NewProject extends Component {
               </Form.Group>
               <Form.Field><label>Status</label></Form.Field>
               <Form.Group inline>
-                <label><input type="radio" name="status" value="0" checked={value===0} onChange={this.onChangeStatus}/>Not Started</label>
-                <label><input type="radio" name="status" value="1" checked={value===1} onChange={this.onChangeStatus}/>Active</label>
-                <label><input type="radio" name="status" value="2" checked={value===2} onChange={this.onChangeStatus}/>Completed</label>
-                <label><input type="radio" name="status" value="3" checked={value===3} onChange={this.onChangeStatus}/>Dismissed</label>
+                <label><input type="radio" name="status" value="0" checked={value==='0'} onChange={this.handleChange}/> Not Started</label>
+                <label><input type="radio" name="status" value="1" checked={value==='1'} onChange={this.handleChange}/> Active</label>
+                <label><input type="radio" name="status" value="2" checked={value==='2'} onChange={this.handleChange}/> Completed</label>
+                <label><input type="radio" name="status" value="3" checked={value==='3'} onChange={this.handleChange}/> Dismissed</label>
               </Form.Group>
               <Form.Field>
                 <label>Add Tasks</label>
-                <input placeholder='Content' />
+                <input placeholder='Content' name='content' value={this.state.tasks}/>
               </Form.Field>
                <Form.Group>
                 <Form.Select fluid label='Assign User' options={options} placeholder='User' />
