@@ -9,7 +9,7 @@ export function getAllUsers() {
 }
 
 export function getAllTasks() {
-  const url = '/api/v1/tasks'
+  const url = 'http://localhost:3001/api/v1/tasks'
   return dispatch => {
     dispatch({ type: "LOADING_API" });
     return fetch(url)
@@ -19,7 +19,7 @@ export function getAllTasks() {
 }
 
 export function getAllProjects() {
-  const url = '/api/v1/projects'
+  const url = 'http://localhost:3001/api/v1/projects'
   return dispatch => {
     dispatch({ type: "LOADING_API" });
     return fetch(url)
@@ -29,7 +29,13 @@ export function getAllProjects() {
 }
 
 export function createNewProject(project) {
-  const url = 'api/v1/projects'
+  let newProject = {
+    owner_id: project.owner_id, name: project.name, 
+    description: project.description, status: parseInt(project.status), 
+    start_date: getDate(project.start_date), end_date: getDate(project.end_date),
+    tasks: project.tasks
+  }
+  const url = 'http://localhost:3001/api/v1/projects'
   return dispatch => {
     dispatch({ type: "LOADING_API" });
     return fetch(url, {
@@ -38,10 +44,10 @@ export function createNewProject(project) {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(project)
+      body: JSON.stringify(newProject)
     }).then(resp => resp.json())
     .then(resp => {
-      if (resp.coffee_shop) {
+      if (resp) { debugger
         // Update redux sore with return data
         dispatch({type: 'ADD_PROJECT_TO_STORE', resp});
       } else {
@@ -52,7 +58,7 @@ export function createNewProject(project) {
 }
 
 export function createNewTask(task) {
-  const url = 'api/v1/tasks'
+  const url = 'http://localhost:3001/api/v1/tasks'
   return dispatch => {
     dispatch({ type: "LOADING_API" });
     return fetch(url, {
@@ -98,7 +104,7 @@ export function signIn(user) {
 }
 
 export function signOut() {
-  const url = 'api/v1/logout'
+  const url = 'http://localhost:3001/api/v1/logout'
   return dispatch => {
     dispatch({ type: "LOADING_API" });
     return fetch(url, {
@@ -118,7 +124,7 @@ export function signOut() {
 }
 
 export function register(user) {
-  const url = 'api/v1/signup'
+  const url = 'http://localhost:3001/api/v1/signup'
   return dispatch => {
     dispatch({ type: "LOADING_API" });
     return fetch(url, {
@@ -138,4 +144,8 @@ export function register(user) {
       }
     });
   }
+}
+
+function getDate(date) {
+  return `${date.getFullYear()}-${date.getDate()}-${date.getMonth()}`
 }

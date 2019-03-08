@@ -3,10 +3,12 @@ export default function getAllProjectsReducer(state = { projects: [], loading: f
   switch (action.type) {
     case 'LOADING_QUERY':
       return { ...state, loading: true}
-    case 'FETCH_MY_SEARCH_QUERY':
+    case 'GET_ALL_PROJECTS':
+    debugger
       data = action.payload.map(data => data = { id: data.id, name: data.name, category: data.categories[0] ? data.categories[0].title : 'N/A', image: data.image_url, isAddedToList: false});
       return { ...state, places: data, loading: false };
-    case 'FETCH_SINGLE_SEARCH_QUERY':
+    case 'ADD_PROJECT_TO_STORE':
+    debugger
       data = action.payload;
       let searchItem = {
         id: data.id,

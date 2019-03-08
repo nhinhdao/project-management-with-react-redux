@@ -9,6 +9,7 @@ import {connect} from 'react-redux';
 
 /* Add style for main compartment */
 const style = {
+  marginTop: '50px',
   marginLeft: '200px',
   minWidth: '550px',
   maxWidth: '80%',
