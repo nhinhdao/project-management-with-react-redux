@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Form, Grid, Segment, Header} from 'semantic-ui-react';
+import {Form, Grid, Segment, Header, Label, List} from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import {connect} from 'react-redux';
@@ -13,22 +13,20 @@ class NewProject extends Component {
     this.handleAddTask = this.handleAddTask.bind(this)
   }
 
-  handleChange = (event) => {
-    this.setState({...this.state, [event.target.name]: event.target.value})
-  }
-
   handleAddTask = () => {
-    this.setState({content: ''})
-    this.setState({...this.state, tasks: [...this.state.tasks, {content: this.state.content, user_id: this.state.user_id,}]})
+    const user = this.props.allUsers.find(user => user.id === this.state.user_id);
+    debugger
+    this.setState({...this.state, tasks: [...this.state.tasks, {content: this.state.content, user: user}]})
+    this.setState({content: ''});
   }
 
+  handleChange = (event) => this.setState({...this.state, [event.target.name]: event.target.value})
   onChangeStart = date => this.setState({start_date: date})
   onChangeEnd = date => this.setState({end_date: date})
   onChangeUser = (e, {value}) => this.setState({user_id: value})
   onChangeStatus = (e, {value}) => this.setState({status: value})
   
   render() {
-    const {project} = this.state;
     const users = this.props.allUsers.map(user => user = {key: user.id, text: user.username, value: user.id, image: {avatar: true, src: user.image}});
     return (
       <Grid columns={2} divided>
@@ -73,16 +71,26 @@ class NewProject extends Component {
             </Form>
           </Grid.Column>
           <Grid.Column>
-            <Segment>
-            <Header as="h3" color="blue" textAlign="center">Preview</Header><hr/>
-              <Header as="h4">Title</Header>
-              <p>{this.state.name}</p>
-              <Header as="h4">Description</Header>
-              <p>{this.state.description}</p>
-              <strong>Start Date: </strong> {this.state.start_date} <strong>End Date:</strong> {this.state.end_date}
+            {this.state &&
+            <Segment color='gray'>
+                <Header as="h3" color="blue" textAlign="center">Preview</Header> <hr />
+                <Header as="h4">Title</Header>
+                <p>{this.state.name}</p>
+                <Header as="h4">Description</Header>
+                <p>{this.state.description}</p>
+                <Header as="h4">Start Date</Header>
+                <DatePicker onChange={this.onChangeStart} selected={this.state.start_date} readOnly={true} placeholderText={this.state.start_date.toString()} />
+                <Header as="h4">End Date</Header>
+                <DatePicker onChange={this.onChangeEnd} selected={this.state.end_date} readOnly={true} placeholderText={this.state.end_date.toString()} />
               <Header as="h4">Tasks</Header>
-              
+              {this.state.tasks.map(task => 
+                <List bulleted key={task.user.id}>
+                  <List.Item>{task.content}</List.Item>
+                  <Label as='a' image><img src={task.user.image} alt='img'/>{task.user.username}</Label>
+                </List>
+                )}
             </Segment>
+            }
           </Grid.Column>
         </Grid.Row>
       </Grid>
