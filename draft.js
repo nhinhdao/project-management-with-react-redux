@@ -1,13 +1,13 @@
 
-<Form>
-  <Form.Group inline>
-    <label>Start Date</label>
-    <DatePicker onChange={this.onChangeStart} selected={this.state.start_date} disabled={true} placeholderText={this.state.start_date.toString()} />
-    <label></label>
-    <label>End Date</label>
-    <DatePicker onChange={this.onChangeEnd} selected={this.state.end_date} disabled={true} placeholderText={this.state.end_date.toString()} />
-  </Form.Group>
-</Form>
-index = this.state.tasks.findIndex(task => task.user.id === 2)
-this.state.tasks.slice(0, index).concat(this.state.tasks.slice(index + 1))
 
+<Card.Group>
+  <Card>
+    <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' />
+    <Card.Content>
+      <Card.Header>Matthew</Card.Header>
+      <Card.Description>
+        Matthew is a musician living in Nashville.
+      </Card.Description>
+    </Card.Content>
+    </Card>
+</Card.Group>

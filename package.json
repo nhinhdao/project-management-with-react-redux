@@ -5,6 +5,9 @@
   "proxy": "http://localhost:3001/",
   "dependencies": {
     "dotenv": "^6.2.0",
+    "interact.js": "^1.2.8",
+    "moment": "^2.24.0",
+    "new-react-calendar-timeline": "^2.2.0",
     "react": "^16.8.4",
     "react-datepicker": "^2.1.0",
     "react-dom": "^16.8.4",
