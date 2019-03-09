@@ -5,19 +5,6 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import {connect} from 'react-redux';
 
-const getStatus = status => {
-  switch (status) {
-    case 1:
-      return 'Active'
-    case 2:
-      return 'Completed'
-    case 3:
-      return 'Dismissed'
-    default:
-      return 'Not Started'
-  }
-}
-
 class NewProject extends Component {
   constructor () {
     super();
@@ -88,9 +75,9 @@ class NewProject extends Component {
                   <label>Add Tasks</label>
                   <input placeholder='Content' name='content' value={this.state.content} onChange={this.handleChange}/>
                 </Form.Field>
-                <Form.Group>
+                <Form.Group inline>
                   <Form.Select label='Assign User' options={users} placeholder='User' onChange={this.onChangeUser}/>
-                  <Icon name="plus" onClick={this.handleAddTask}/>
+                  <Label><Icon name="plus" onClick={this.handleAddTask}/>Add</Label>
                 </Form.Group>
                 <Form.Button color='blue' type='submit'>Submit</Form.Button>
               </Form>
@@ -115,7 +102,6 @@ class NewProject extends Component {
                     <DatePicker onChange={this.onChangeEnd} selected={this.state.end_date} disabled={true} placeholderText={this.state.end_date.toString()} />
                   </Form.Group>
                 </Form>
-                <Header as="h4">Status: {getStatus(this.state.status)}</Header>
                 <Header as="h4">Tasks</Header>
                 <Table basic='very' celled collapsing>
                   <Table.Body>

@@ -1,4 +1,4 @@
-export default function getAllProjectsReducer(state = { projects: [], loading: false }, action) {
+export default function getAllProjectsReducer(state = { projects: [], project: {}, loading: false }, action) {
   let places, singlePlace, data;
   switch (action.type) {
     case 'LOADING_QUERY':
@@ -8,19 +8,18 @@ export default function getAllProjectsReducer(state = { projects: [], loading: f
       data = action.payload.map(data => data = { id: data.id, name: data.name, category: data.categories[0] ? data.categories[0].title : 'N/A', image: data.image_url, isAddedToList: false});
       return { ...state, places: data, loading: false };
     case 'ADD_PROJECT_TO_STORE':
-    debugger
-      data = action.payload;
-      let searchItem = {
+      data = action.resp;
+      let project = {
         id: data.id,
         name: data.name,
-        contact: data.display_phone,
-        category: data.categories[0].title,
-        location: data.location.display_address.join(", "),
-        rating: data.rating,
-        photos: data.photos,
-        isAddedToList: false,
+        description: data.description,
+        start_date: data.start_date,
+        end_date: data.end_date,
+        status: data.status,
+        owner: data.owner,
+        tasks: data.tasks
       }
-      return { ...state, singlePlace: searchItem, loading: false };
+      return { ...state, project: project, loading: false };
     case 'ADD_TO_MY_LIST':
       places = [...state.places.map(place => {
         if (place.id !== action.id) { return place }

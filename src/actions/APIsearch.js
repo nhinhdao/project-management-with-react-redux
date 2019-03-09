@@ -8,18 +8,8 @@ export function getAllUsers() {
   }
 }
 
-export function getAllTasks() {
-  const url = 'http://localhost:3001/api/v1/tasks'
-  return dispatch => {
-    dispatch({ type: "LOADING_API" });
-    return fetch(url)
-      .then(response => response.json())
-      .then(data => dispatch({ type: 'GET_ALL_TASKS', payload: data }));
-  }
-}
-
-export function getAllProjects() {
-  const url = 'http://localhost:3001/api/v1/projects'
+export function getAllProjects(id) {
+  const url = `http://localhost:3001/api/v1/allprojects/${id}`
   return dispatch => {
     dispatch({ type: "LOADING_API" });
     return fetch(url)
@@ -47,34 +37,11 @@ export function createNewProject(project) {
       body: JSON.stringify(newProject)
     }).then(resp => resp.json())
     .then(resp => {
-      if (resp) { debugger
+      if (resp.id) {
         // Update redux sore with return data
         dispatch({type: 'ADD_PROJECT_TO_STORE', resp});
-      } else {
+      } else {debugger
         dispatch({ type: "ADD_PROJECT_ERROR", errors: resp.errors });
-      }
-    });
-  }
-}
-
-export function createNewTask(task) {
-  const url = 'http://localhost:3001/api/v1/tasks'
-  return dispatch => {
-    dispatch({ type: "LOADING_API" });
-    return fetch(url, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(task)
-    }).then(resp => resp.json())
-    .then(resp => {
-      if (resp.coffee_shop) {
-        // Update redux sore with return data
-        dispatch({type: 'ADD_TASK_TO_STORE', resp});
-      } else {
-        dispatch({ type: "ADD_TASK_ERROR", errors: resp.errors });
       }
     });
   }
@@ -136,7 +103,7 @@ export function register(user) {
       body: JSON.stringify(user)
     }).then(resp => resp.json())
     .then(resp => {
-      if (resp.coffee_shop) {
+      if (resp) {
         // Update redux sore with return data
         dispatch({type: 'REGISTER_NEW_USER', resp});
       } else {
