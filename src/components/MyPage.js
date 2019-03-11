@@ -16,7 +16,7 @@ class MyPage extends Component {
       image: props.userInfo.image,
       updateAccount: false,
       errors: false
-    };
+    };debugger 
     this.handleUpdateInformation = this.handleUpdateInformation.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
