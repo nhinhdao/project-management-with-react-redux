@@ -37,7 +37,7 @@ class Homepage extends Component {
               <Link to="/users"><Menu.Item name="users"><Icon name="users" />Users</Menu.Item></Link>
               <Link to="/home"><Menu.Item name="logout"><Icon name="power" />Logout</Menu.Item></Link>
             </Sidebar>
-            <Route exact path="/home" component={MyPage} />
+            <Route exact path="/home" render={routerProps => <MyPage user={this.props.userInfo} {...routerProps} />} />
             <Route exact path="/users" component={UsersPage} />
             <Route exact path="/projects/new" component={NewProject} />
             <Route exact path="/timeline" component={ProjectTimeline} />
