@@ -10,6 +10,8 @@ export default function getUserInfoReducer(state = {user: {}, users: [], loading
     case "GET_ALL_USERS":
       resp = action.payload.map(data => data = {id: data.id, username: data.username, email: data.email, image: data.image, project_count: data.projects.length, task_count: data.tasks.length})
       return { ...state, users: resp, loading: false }
+    case "UPDATE_USER_ACCOUNT":
+      debugger
     default:
       return state;
   }

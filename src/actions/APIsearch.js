@@ -20,10 +20,8 @@ export function getAllProjects(id) {
 
 export function createNewProject(project) {
   let newProject = {
-    owner_id: project.owner_id, name: project.name, 
-    description: project.description, status: parseInt(project.status), 
-    start_date: getDate(project.start_date), end_date: getDate(project.end_date),
-    tasks: project.tasks
+    owner_id: project.owner_id, title: project.name, description: project.description,  
+    start_date: getDate(project.start_date), end_date: getDate(project.end_date), tasks: project.tasks
   }
   const url = 'http://localhost:3001/api/v1/projects'
   return dispatch => {
@@ -47,6 +45,25 @@ export function createNewProject(project) {
   }
 }
 
+export function updateUserAccount(user) {
+  const url = `http://localhost:3001/api/v1/users/${user.id}`;
+  user = {username: user.username, email: user.email, password: user.password, password_confirmation: user.password_confirmation, image: user.image}
+  return dispatch => {
+    dispatch({
+      type: "LOADING_API"
+    });
+    return fetch(url, {
+        method: 'PATCH',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user)
+      }).then(resp => resp.json())
+      .then(resp => {dispatch({type: "UPDATE_USER_ACCOUNT", resp})});
+  }
+}
+
 export function signIn(user) {
   const url = 'http://localhost:3001/api/v1/login'
   return dispatch => {
@@ -61,6 +78,8 @@ export function signIn(user) {
     }).then(resp => resp.json())
       .then(resp => {
       if (resp) {
+        // set userId to localstorage for accessing its projects later
+        localStorage.setItem("userID", parseInt(resp.id))
         // Update redux sore with return data
         dispatch({type: 'SIGN_IN', resp});
       } else {
@@ -104,6 +123,8 @@ export function register(user) {
     }).then(resp => resp.json())
     .then(resp => {
       if (resp) {
+        // set userId to localstorage for accessing its projects later
+        localStorage.setItem("userID", resp.id)
         // Update redux sore with return data
         dispatch({type: 'REGISTER_NEW_USER', resp});
       } else {

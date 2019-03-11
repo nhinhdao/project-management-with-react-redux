@@ -9,7 +9,7 @@ class NewProject extends Component {
   constructor () {
     super();
     this.state = {
-      owner_id: 1, name: '', description: '', status: '0', start_date: new Date(), end_date: new Date(), content: '', user_id: 1, tasks: []
+      owner_id: 1, name: '', description: '', start_date: new Date(), end_date: new Date(), content: '', user_id: 1, tasks: []
     };
     this.handleAddTask = this.handleAddTask.bind(this);
     this.handleDeleteTask = this.handleDeleteTask.bind(this);
@@ -21,8 +21,8 @@ class NewProject extends Component {
     this.setState({content: ''});
   }
 
-  handleDeleteTask = (id) => {debugger
-    let index = this.state.tasks.findIndex(task => task.user.id === id)
+  handleDeleteTask = (id) => {
+    let index = this.state.tasks.findIndex(task => task.user_id === id)
     this.setState({...this.state, tasks: this.state.tasks.slice(0, index).concat(this.state.tasks.slice(index+1))})
   }
 
@@ -35,7 +35,6 @@ class NewProject extends Component {
   onChangeStart = date => this.setState({start_date: date})
   onChangeEnd = date => this.setState({end_date: date})
   onChangeUser = (e, {value}) => this.setState({user_id: value})
-  onChangeStatus = (e, {value}) => this.setState({status: value})
   
   render() {
     const users = this.props.allUsers.map(user => user = {key: user.id, text: user.username, value: user.id, image: {avatar: true, src: user.image}});
@@ -64,20 +63,13 @@ class NewProject extends Component {
                   <label>End Date</label>
                   <DatePicker onChange={this.onChangeEnd} selected={this.state.end_date} />
                 </Form.Group>
-                <Form.Field><label>Status</label></Form.Field>
-                <Form.Group inline>
-                  <Form.Radio name='status' label='Not Started' value='0' checked={this.state.status === '0'} onChange={this.onChangeStatus} />
-                  <Form.Radio name='status' label='Active' value='1' checked={this.state.status === '1'} onChange={this.onChangeStatus} />
-                  <Form.Radio name='status' label='Completed' value='2' checked={this.state.status === '2'} onChange={this.onChangeStatus} />
-                  <Form.Radio name='status' label='Dismissed' value='3' checked={this.state.status === '3'} onChange={this.onChangeStatus} />
-                </Form.Group>
                 <Form.Field>
                   <label>Add Tasks</label>
                   <input placeholder='Content' name='content' value={this.state.content} onChange={this.handleChange}/>
                 </Form.Field>
                 <Form.Group inline>
                   <Form.Select label='Assign User' options={users} placeholder='User' onChange={this.onChangeUser}/>
-                  <Label><Icon name="plus" onClick={this.handleAddTask}/>Add</Label>
+                  <Label onClick={this.handleAddTask}><Icon name="plus"/>Add</Label>
                 </Form.Group>
                 <Form.Button color='blue' type='submit'>Submit</Form.Button>
               </Form>
@@ -115,7 +107,7 @@ class NewProject extends Component {
                         </Table.Cell>
                         <Table.Cell>{task.content}</Table.Cell>
                         <Table.Cell>
-                          <Icon name="delete" onClick={(i) => this.handleDeleteTask(task.user.id)}/>
+                          <Icon name="delete" onClick={(i) => this.handleDeleteTask(task.user_id)}/>
                         </Table.Cell>
                       </Table.Row>
                     )}

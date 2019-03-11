@@ -4,9 +4,11 @@ export default function getAllProjectsReducer(state = { projects: [], project: {
     case 'LOADING_QUERY':
       return { ...state, loading: true}
     case 'GET_ALL_PROJECTS':
-    debugger
-      data = action.payload.map(data => data = { id: data.id, name: data.name, category: data.categories[0] ? data.categories[0].title : 'N/A', image: data.image_url, isAddedToList: false});
-      return { ...state, places: data, loading: false };
+      data = action.payload.map(project => 
+        data = { id: project.id, title: project.title, owner: project.owner, description: project.description, 
+          start_date: project.start_date, end_date: project.end_date, tasks: project.tasks}
+        );
+      return { ...state, projects: data, loading: false };
     case 'ADD_PROJECT_TO_STORE':
       data = action.resp;
       let project = {
@@ -15,7 +17,6 @@ export default function getAllProjectsReducer(state = { projects: [], project: {
         description: data.description,
         start_date: data.start_date,
         end_date: data.end_date,
-        status: data.status,
         owner: data.owner,
         tasks: data.tasks
       }

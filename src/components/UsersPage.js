@@ -21,7 +21,7 @@ class UsersPage extends React.Component {
               Projects: {user.project_count}
             </Button>
             <Button basic color='pink'>
-              Tasks: {user.task_count}
+              Assigned Tasks: {user.task_count}
             </Button>
           </div>
         </Card.Content>
