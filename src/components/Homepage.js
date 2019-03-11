@@ -19,9 +19,9 @@ const style = {
 
 class Homepage extends Component {
   componentDidMount() {
-    this.props.getAllUsers();
     let userID = localStorage.getItem("userID")
     this.props.getAllProjects(userID)
+    this.props.getAllUsers();
   }
 
   render() {
@@ -30,14 +30,14 @@ class Homepage extends Component {
         <Router>
           <React.Fragment>
             <Sidebar as={Menu} inverted visible vertical width="thin" icon="labeled">
-              <Link to="/home"><Menu.Item name="title"><Image wrapped size="tiny" src={projectmanagementPane}/></Menu.Item></Link>
-              <Link to="/home"><Menu.Item name="users"><Icon name="home" />Home</Menu.Item></Link>
+              <Link to="/"><Menu.Item name="title"><Image wrapped size="tiny" src={projectmanagementPane}/></Menu.Item></Link>
+              <Link to="/"><Menu.Item name="users"><Icon name="home" />Home</Menu.Item></Link>
               <Link to="/projects/new"><Menu.Item name="newproject"><Icon name="plus" />New Project</Menu.Item></Link>
               <Link to="/timeline"><Menu.Item name="timeline"><Icon name="calendar times outline" />TimeLine</Menu.Item></Link>
               <Link to="/users"><Menu.Item name="users"><Icon name="users" />Users</Menu.Item></Link>
               <Link to="/home"><Menu.Item name="logout"><Icon name="power" />Logout</Menu.Item></Link>
             </Sidebar>
-            <Route exact path="/home" render={routerProps => <MyPage user={this.props.userInfo} {...routerProps} />} />
+            <Route exact path="/" render={routerProps => <MyPage userInfo={this.props.userInfo} {...routerProps} />} />
             <Route exact path="/users" component={UsersPage} />
             <Route exact path="/projects/new" component={NewProject} />
             <Route exact path="/timeline" component={ProjectTimeline} />

@@ -46,6 +46,7 @@ export function createNewProject(project) {
 }
 
 export function updateUserAccount(user) {
+  debugger
   const url = `http://localhost:3001/api/v1/users/${user.id}`;
   user = {username: user.username, email: user.email, password: user.password, password_confirmation: user.password_confirmation, image: user.image}
   return dispatch => {
