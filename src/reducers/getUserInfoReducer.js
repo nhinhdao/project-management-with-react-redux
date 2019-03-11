@@ -12,6 +12,7 @@ export default function getUserInfoReducer(state = {user: {}, users: [], loading
       return { ...state, users: resp, loading: false }
     case "UPDATE_USER_ACCOUNT":
       debugger
+      break;
     default:
       return state;
   }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {Grid, Segment, Header, Label, Image, Button, Form} from 'semantic-ui-react';
 import {connect} from 'react-redux';
-import {updateAccount} from '../actions/APIsearch';
+import {updateUserAccount} from '../actions/APIsearch';
 
 function UpdateForm(props){
   return (
