@@ -1,45 +1,56 @@
 import React, { Component } from 'react'
 import {Grid, Segment, Header, Label, Image, Button, Form} from 'semantic-ui-react';
 import {connect} from 'react-redux';
-import {updateUserAccount} from '../actions/APIsearch';
+import {updateUserAccount, } from '../actions/APIsearch';
 
 
 class MyPage extends Component {
-  constructor (props) {
-    super(props);
+  constructor () {
+    super();
     this.state = {
-      id: props.userInfo.id,
-      username: props.userInfo.username, 
-      email: props.userInfo.email, 
-      password: props.userInfo.password, 
-      password_confirmation: props.userInfo.password_confirmation, 
-      image: props.userInfo.image,
+      user: {username: '', email: '', password: '', password_confirmation: '', image: ''},
       updateAccount: false,
       errors: false
-    };debugger 
+    };
     this.handleUpdateInformation = this.handleUpdateInformation.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
+  componentDidMount(){
+    const id = localStorage.getItem("userID")
+    fetch(`http://localhost:3001/api/v1/users/${id}`)
+    .then(resp => resp.json()).then(resp => this.setState({
+      ...this.state,
+      user: {
+        ...this.state.user,
+        username: resp.username,
+        email: resp.email,
+        image: resp.image
+      }
+    }))
+  }
+
   handleClick = () => {
-    this.setState({updateAccount: !this.state.updateAccount})
+    this.setState({updateAccount: !this.state.updateAccount, errors: false})
   }
 
   handleUpdateInformation = (event) => {
     const {name, value} = event.target
-    if (value !== ''){this.setState({[name]: value})}
+    if (value !== ''){this.setState({...this.state, user:{...this.state.user, [name]: value}})}
   }
+
 
   handleSubmit = event => {
     event.preventDefault();
-    if (this.state.password && this.state.password === this.state.password_confirmation) {
-      this.props.updateUserAccount(this.state)
+    if (this.state.user.password && this.state.user.password === this.state.user.password_confirmation) {
+      this.props.updateUserAccount(this.state.user);
+      this.setState({...this.state, updateAccount: false, errors: false})
     }
     else {this.setState({errors : true})}
   }
-  
+
   render() {
-    const {user} = this.props;
+    const {user} = this.state;
     return (
     <Grid>
       <Grid.Column>
@@ -48,29 +59,26 @@ class MyPage extends Component {
           <hr/>
           <Label as='a' color='red' ribbon>Overview</Label>
           <span>Account Details</span>
-          <Image src={user.image} />
+          {user.image ? <Image src={user.image}/> : <Image src='https://i.imgur.com/NbwnI6C.jpg' />}
           <Segment color='blue'>
-            <Header as='h4'>{user.username}</Header>
+            <Header as='h4' color='blue'>{user.username}</Header>
             <p><strong>{user.email}</strong></p>
-            <p><strong>Projects: {user.project_count}</strong></p>
           </Segment>
           <Button onClick={this.handleClick}>Update Account</Button>
-          { this.state.updateAccount && 
+          { this.state.updateAccount &&
             <Form onSubmit={this.handleSubmit}>
               <hr/>
               <Form.Group widths='equal'>
-                <Form.Input label='Username' name='username' value={user.username} onChange={this.handleUpdateInformation} />
-                <Form.Input label='Email' name='email' value={user.email} onChange={this.handleUpdateInformation} />
+                <Form.Input label='Username' name='username' value={user.username} placeholder={user.username} onChange={this.handleUpdateInformation} />
+                <Form.Input label='Email' name='email' value={user.email} placeholder={user.email} onChange={this.handleUpdateInformation} />
               </Form.Group>
               <Form.Group widths='equal'>
-                <Form.Input label='Password' name='password' placeholder='Password' onChange={this.handleUpdateInformation} required/>
-                <Form.Input label='Password Confirmation' name='password_confirmation' placeholder='Password Confirmation' onChange={this.handleUpdateInformation} required/>
+                <Form.Input label='Password' type='password' name='password' placeholder='Password' value={user.password} onChange={this.handleUpdateInformation} required/>
+                <Form.Input label='Password Confirmation' type='password' name='password_confirmation' value={user.password_confirmation} placeholder='Password Confirmation' onChange={this.handleUpdateInformation} required/>
               </Form.Group>
               {this.state.errors && <Header as='h5' color='red'>Passwords do not match/present. Please try again!</Header>}
-              <Form.Group>
-                <Form.Input label='Link to your profile picture' name='image' value={user.image} placeholder='Picture of size 200x200 if possible' widths={12}/>
-              </Form.Group>
-              <Button type='submit' color='blue' onClick={this.handleSubmit}>Update</Button><Button type='button' onClick={this.handleClick}>Cancel</Button>
+              <Form.Input label='Link to your profile picture' name='image' value={user.image} placeholder='Picture of size 200x200 if possible' onChange={this.handleUpdateInformation}/>
+              <Button type='submit' color='blue'>Update</Button><Button type='button' onClick={this.handleClick}>Cancel</Button>
             </Form>
            }
         </Segment>
@@ -80,16 +88,10 @@ class MyPage extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    user: state.current_user.user
-  }
-}
-
 const mapDispatchToProps = dispatch => {
   return {
     updateUserAccount: user => dispatch(updateUserAccount(user))
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyPage);
+export default connect(null, mapDispatchToProps)(MyPage);

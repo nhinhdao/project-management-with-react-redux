@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link} from 'react-router-dom';
-import { getAllUsers, getAllProjects } from '../actions/APIsearch';
+import { BrowserRouter as Router, Route, Link, Redirect} from 'react-router-dom';
+import { getAllUsers, getAllProjects, signOut } from '../actions/APIsearch';
 import { Sidebar, Menu, Icon, Image } from 'semantic-ui-react';
 import projectmanagementPane from '../images/projectmanagementPane.png';
 import NewProject from '../containers/NewProject';
@@ -18,6 +18,13 @@ const style = {
 }
 
 class Homepage extends Component {
+  handleLogout = (event) => {
+    event.preventDefault();
+    this.props.signOut();
+    localStorage.clear();
+    this.props.history.push('/login');
+  };
+
   componentDidMount() {
     let userID = localStorage.getItem("userID")
     this.props.getAllProjects(userID)
@@ -25,6 +32,7 @@ class Homepage extends Component {
   }
 
   render() {
+    if (!localStorage.getItem("userID")) {return <Redirect to = "/login"/>}
     return (
       <div style={style}>
         <Router>
@@ -35,9 +43,9 @@ class Homepage extends Component {
               <Link to="/projects/new"><Menu.Item name="newproject"><Icon name="plus" />New Project</Menu.Item></Link>
               <Link to="/timeline"><Menu.Item name="timeline"><Icon name="calendar times outline" />TimeLine</Menu.Item></Link>
               <Link to="/users"><Menu.Item name="users"><Icon name="users" />Users</Menu.Item></Link>
-              <Link to="/home"><Menu.Item name="logout"><Icon name="power" />Logout</Menu.Item></Link>
+              <Menu.Item name="logout" onClick={this.handleLogout}><Icon name="power" />Logout</Menu.Item>
             </Sidebar>
-            <Route exact path="/" render={routerProps => <MyPage userInfo={this.props.userInfo} {...routerProps} />} />
+            <Route exact path="/" component={MyPage} />
             <Route exact path="/users" component={UsersPage} />
             <Route exact path="/projects/new" component={NewProject} />
             <Route exact path="/timeline" component={ProjectTimeline} />
@@ -53,7 +61,8 @@ const mapStateToProps = state => ({userInfo: state.current_user.user})
 const mapDispatchToProps = dispatch => {
   return {
     getAllUsers: () => dispatch(getAllUsers()),
-    getAllProjects: id => dispatch(getAllProjects(id))
+    getAllProjects: id => dispatch(getAllProjects(id)),
+    signOut: () => dispatch(signOut())
   }
 }
 

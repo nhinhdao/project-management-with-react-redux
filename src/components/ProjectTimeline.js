@@ -1,19 +1,23 @@
 import Timeline from 'new-react-calendar-timeline/lib';
 import moment from 'moment';
 import React, { Component} from 'react';
-import { Header, Image, Modal, Form, Label, Table} from 'semantic-ui-react';
+import { Header, Image, Modal, Form, Label, Table, Button} from 'semantic-ui-react';
 import {connect} from 'react-redux';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import randomColor from 'randomcolor';
 
 class ProjectTimeline extends Component {
-  state = {date: new Date()}
+  state = {date: new Date(), modalOpen: false}
 
   handleChange = (date) => this.setState({ date: date })
+  handleOpen = () => this.setState({modalOpen: true})
+  handleClose = () => this.setState({modalOpen: false})
 
   itemRenderer = ({ item }) => {
     return (
-      <Modal trigger={<div>{item.description}</div>}>
+      <Modal trigger={<div onClick={this.handleOpen} style={{backgroundColor: item.bgColor, color: 'black'}}>{item.description}</div>} 
+      open={this.state.modalOpen} onClose={this.handleClose}>
         <Modal.Header>{item.title}</Modal.Header>
         <Modal.Content image>
           <Modal.Description>
@@ -48,6 +52,10 @@ class ProjectTimeline extends Component {
             </Table>
           </Modal.Description>
         </Modal.Content>
+        <Modal.Actions>
+          <Button positive>Edit</Button>
+          <Button onClick={this.handleClose}>Close</Button>
+        </Modal.Actions>
       </Modal>
     )
   }
@@ -61,15 +69,17 @@ class ProjectTimeline extends Component {
       items.push({
         id: project.id, group: index + 1, title: project.title, start_time: moment(project.start_date), end_time: moment(project.end_date),
         owner: project.owner, description: project.description, tasks: project.tasks,
-        canMove: false, canResize: false, canChangeGroup: false
+        canMove: false, canResize: false, canChangeGroup: false,
+        bgColor: randomColor({luminosity: "light", format: "rgba", alpha: 0.5})
       })}
     )
     
     return(
       <Timeline groups={groups}
       items={items}
-      sidebarContent={<Header as='h4' textAlign='center'>Project</Header>}
+      sidebarContent={<h3>Project</h3>}
       itemRenderer={this.itemRenderer}
+      itemHeightRatio={0.7}
       defaultTimeStart={moment('2019-03-08')}
       defaultTimeEnd={moment('2019-04-08')}
       lineHeight={35}

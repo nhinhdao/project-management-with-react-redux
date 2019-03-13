@@ -20,7 +20,7 @@ export function getAllProjects(id) {
 
 export function createNewProject(project) {
   let newProject = {
-    owner_id: project.owner_id, title: project.name, description: project.description,  
+    owner_id: project.owner_id, title: project.name, description: project.description,
     start_date: getDate(project.start_date), end_date: getDate(project.end_date), tasks: project.tasks
   }
   const url = 'http://localhost:3001/api/v1/projects'
@@ -38,7 +38,7 @@ export function createNewProject(project) {
       if (resp.id) {
         // Update redux sore with return data
         dispatch({type: 'ADD_PROJECT_TO_STORE', resp});
-      } else {debugger
+      } else {
         dispatch({ type: "ADD_PROJECT_ERROR", errors: resp.errors });
       }
     });
@@ -46,9 +46,8 @@ export function createNewProject(project) {
 }
 
 export function updateUserAccount(user) {
-  debugger
-  const url = `http://localhost:3001/api/v1/users/${user.id}`;
-  user = {username: user.username, email: user.email, password: user.password, password_confirmation: user.password_confirmation, image: user.image}
+  const id = localStorage.getItem('userID')
+  const url = `http://localhost:3001/api/v1/users/${id}`;
   return dispatch => {
     dispatch({
       type: "LOADING_API"
@@ -61,7 +60,7 @@ export function updateUserAccount(user) {
         },
         body: JSON.stringify(user)
       }).then(resp => resp.json())
-      .then(resp => {dispatch({type: "UPDATE_USER_ACCOUNT", resp})});
+      .then(resp => dispatch({type: "UPDATE_USER_ACCOUNT", resp}));
   }
 }
 
@@ -78,7 +77,7 @@ export function signIn(user) {
       body: JSON.stringify(user)
     }).then(resp => resp.json())
       .then(resp => {
-      if (resp) {
+      if (resp.id) {
         // set userId to localstorage for accessing its projects later
         localStorage.setItem("userID", parseInt(resp.id))
         // Update redux sore with return data
@@ -86,7 +85,7 @@ export function signIn(user) {
       } else {
         dispatch({ type: "SIGN_IN_ERROR", errors: resp.errors });
       }
-    });
+    }).catch(error => console.log('Error: ', error));
   }
 }
 
@@ -102,11 +101,7 @@ export function signOut() {
       },
       body: JSON.stringify()
     }).then(resp => resp.json())
-    .then(resp => {
-      if (!resp.error) {
-        dispatch({type: 'SIGN_OUT'});
-      }
-    });
+    .then(resp => dispatch({type: 'SIGN_OUT'}))
   }
 }
 

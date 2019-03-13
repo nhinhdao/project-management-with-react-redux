@@ -7,11 +7,10 @@ import { Image, Grid, Header,  Segment } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 
 class WelcomePage extends Component {
-  state = {register: false};
+  state = {register: false, error: false};
 
   handleSignIn = user => {
-    this.props.signIn(user);
-    this.props.history.push('/');
+    this.props.signIn(user)
   }
 
   handleRegister = user => {
@@ -19,7 +18,7 @@ class WelcomePage extends Component {
     this.props.history.push('/');
   }
 
-  toggerregister = () => {
+  toggleRegister = () => {
     this.setState({register: !this.state.register})
   }
 
@@ -35,12 +34,12 @@ class WelcomePage extends Component {
           </Grid.Row>
           <Grid.Row>
             <Grid.Column width={2}>
-              <Segment onClick={this.toggerregister}><Header as="h3" color="blue" textAlign="center">
+              <Segment onClick={this.toggleRegister}><Header as="h3" color="blue" textAlign="center">
               Log In
             </Header></Segment>
             </Grid.Column>
             <Grid.Column width={2}>
-              <Segment onClick={this.toggerregister}><Header as="h3" color="blue" textAlign="center">
+              <Segment onClick={this.toggleRegister}><Header as="h3" color="blue" textAlign="center">
               Register
             </Header></Segment>
             </Grid.Column>
@@ -50,10 +49,20 @@ class WelcomePage extends Component {
               {this.state.register ? <RegisterForm handleRegister={this.handleRegister}/> : <SignInForm handleSignIn={this.handleSignIn}/>}
             </Grid.Column>
           </Grid.Row>
+          {this.state.error &&
+          <Grid.Row>
+            <Grid.Column width={4}>
+              <Header as='h3' color='red'>Incorrect Username/Password</Header>
+            </Grid.Column>
+          </Grid.Row>}
         </Grid>
       </div>
     );
   }
+}
+
+const mapStateToProps = state => {
+  return {error: state.current_user.error}
 }
 
 const mapDispatchToProps = dispatch => {
@@ -63,4 +72,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(WelcomePage);
+export default connect(mapStateToProps, mapDispatchToProps)(WelcomePage);
