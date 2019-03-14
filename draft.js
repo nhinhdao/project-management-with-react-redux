@@ -16,7 +16,8 @@
   <div style={{overflow: "hidden", whiteSpace: "nowrap"}}>{item.description}</div>
     </div>
 
-import Timeline from 'new-react-calendar-timeline/lib';
+<Modal trigger={<div onClick={this.handleOpen} style={{backgroundColor: item.bgColor, color: 'black'}}>{item.description}</div>} 
+open={this.state.modalOpen} onClose={this.handleClose}>
 
 import Timeline from 'react-calendar-timeline'
 import 'react-calendar-timeline/lib/Timeline.css'
