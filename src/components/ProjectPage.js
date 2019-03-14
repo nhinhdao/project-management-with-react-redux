@@ -3,8 +3,9 @@ import { Header, Image, Modal, Form, Label, Table, Button} from 'semantic-ui-rea
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
 
-export default class ProjectPage extends Component {
+class ProjectPage extends Component {
   constructor(props){
     super(props);
     this.state = {project: {}, date: new Date(), modalOpen: false}
@@ -29,8 +30,10 @@ export default class ProjectPage extends Component {
   handleClose = () => this.setState({modalOpen: false})
 
   render(){
-    debugger
-    const {project} = this.state
+    const project = this.props.projects.find(project => project.id === parseInt(this.props.match.params.projectID));
+    const start_date = new Date(project.start_date + " ");
+    const end_date = new Date(project.end_date + " ");
+    // const {project} = this.state
     return(
     <Modal open={this.state.modalOpen} onClose={this.handleClose} dimmer='blurring'>
       <Modal.Header>{project.title}</Modal.Header>
@@ -43,10 +46,10 @@ export default class ProjectPage extends Component {
           <Form>
             <Form.Group inline>
               <label>Start Date</label>
-              <DatePicker onChange={this.handleChange} selected={project.start_date.toDate()} disabled={true} placeholderText={project.start_date.toString()}/>
+              <DatePicker onChange={this.handleChange} selected={start_date} disabled={true} placeholderText={start_date.toString()}/>
               <label></label>
               <label>End Date</label>
-              <DatePicker onChange={this.handleChange} selected={project.end_date.toDate()} disabled={true} placeholderText={project.end_date.toString()} />
+              <DatePicker onChange={this.handleChange} selected={end_date} disabled={true} placeholderText={end_date.toString()} />
             </Form.Group>
           </Form>
           <Header as="h4">Tasks</Header>
@@ -76,4 +79,10 @@ export default class ProjectPage extends Component {
   }
 }
 
-// export default ProjectPage;
+const mapStateToProps = state => {
+  return {
+    projects: state.allProjects.projects
+  }
+}
+
+export default connect(mapStateToProps)(ProjectPage);

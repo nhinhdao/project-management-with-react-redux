@@ -46,14 +46,12 @@ class Homepage extends Component {
               <Link to="/users"><Menu.Item name="users"><Icon name="users" />Users</Menu.Item></Link>
               <Menu.Item name="logout" onClick={this.handleLogout}><Icon name="power" />Logout</Menu.Item>
             </Sidebar>
-            <Switch>
-              <Route exact path="/" component={MyPage} />
-              <Route exact path="/users" component={UsersPage} />
-              <Route exact path="/projects" component={ProjectTimeline} />
-              <Route exact path="/projects/new" component={NewProject} />
-              <Route exact path="/projects/:projectID" component={ProjectPage} />
-              <Route exact path="/projects/:projectID/edit" component={NewProject} />
-            </Switch>
+            <Route exact path="/" component={MyPage} />
+            <Route exact path="/users" component={UsersPage} />
+            <Route exact path="/projects" component={ProjectTimeline} />
+            <Route exact path="/projects/new" component={NewProject} />
+            <Route exact path="/projects/:projectID" component={ProjectPage} />
+            <Route exact path="/projects/:projectID/edit" component={NewProject} />
           </React.Fragment>
         </Router>
       </div>

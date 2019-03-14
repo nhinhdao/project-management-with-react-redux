@@ -111,8 +111,7 @@ export function signIn(user) {
         dispatch({type: 'SIGN_IN', resp});
       } else {
         dispatch({ type: "SIGN_IN_ERROR", errors: resp.errors });
-      }
-    }).catch(error => console.log('Error: ', error));
+      }})
   }
 }
 
