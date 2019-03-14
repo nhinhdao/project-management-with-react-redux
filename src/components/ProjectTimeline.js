@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import randomColor from 'randomcolor';
+import {Link} from 'react-router-dom';
 
 class ProjectTimeline extends Component {
   state = {date: new Date(), modalOpen: false}
@@ -53,7 +54,7 @@ class ProjectTimeline extends Component {
           </Modal.Description>
         </Modal.Content>
         <Modal.Actions>
-          <Button positive>Edit</Button>
+          <Link to={`/projects/${item.id}/edit`}><Button positive>Edit</Button></Link>
           <Button onClick={this.handleClose}>Close</Button>
         </Modal.Actions>
       </Modal>

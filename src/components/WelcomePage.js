@@ -10,7 +10,8 @@ class WelcomePage extends Component {
   state = {register: false, error: false};
 
   handleSignIn = user => {
-    this.props.signIn(user)
+    this.props.signIn(user);
+    this.props.history.push('/');
   }
 
   handleRegister = user => {

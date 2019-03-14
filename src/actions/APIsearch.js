@@ -45,6 +45,33 @@ export function createNewProject(project) {
   }
 }
 
+export function updateProject(project, id) {
+  let editProject = {
+    owner_id: project.owner_id, title: project.name, description: project.description,
+    start_date: getDate(project.start_date), end_date: getDate(project.end_date), tasks: project.tasks
+  }
+  const url = `http://localhost:3001/api/v1/projects/${id}`
+  return dispatch => {
+    dispatch({ type: "LOADING_API" });
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(editProject)
+    }).then(resp => resp.json())
+    .then(resp => {
+      if (resp.id) {
+        // Update redux sore with return data
+        dispatch({type: 'ADD_PROJECT_TO_STORE', resp});
+      } else {
+        dispatch({ type: "ADD_PROJECT_ERROR", errors: resp.errors });
+      }
+    });
+  }
+}
+
 export function updateUserAccount(user) {
   const id = localStorage.getItem('userID')
   const url = `http://localhost:3001/api/v1/users/${id}`;

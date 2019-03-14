@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {Form, Grid, Segment, Header, Label, Image, Table, Icon} from 'semantic-ui-react';
-import {createNewProject} from '../actions/APIsearch';
+import {createNewProject, updateProject} from '../actions/APIsearch';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import {connect} from 'react-redux';
@@ -9,10 +9,29 @@ class NewProject extends Component {
   constructor () {
     super();
     this.state = {
-      owner_id: 1, name: '', description: '', start_date: new Date(), end_date: new Date(), content: '', user_id: 1, tasks: []
+      owner_id: 1, title: '', description: '', start_date: new Date(), end_date: new Date(), content: '', user_id: 1, tasks: []
     };
     this.handleAddTask = this.handleAddTask.bind(this);
     this.handleDeleteTask = this.handleDeleteTask.bind(this);
+  }
+
+  componentDidMount(){
+    const {match: {params}} = this.props;
+    if (params.projectID){
+      let tasks, start_date, end_date;
+      fetch(`http://localhost:3001/api/v1/projects/${params.projectID}`)
+        .then(response => response.json())
+        .then(project => {
+          tasks = project.tasks.map(task => task = {content: task.content, user_id: task.user.id, user_username: task.user.username, user_image: task.user.image});
+          start_date = project.start_date + ' ';
+          end_date = project.end_date + ' ';
+          this.setState({
+          owner_id: project.id, title: project.title, description: project.description,
+          start_date: new Date(start_date), end_date: new Date(end_date),
+          content: '', user_id: 1, tasks: tasks})
+      });
+    }
+    else {this.setState({...this.state})}
   }
 
   handleAddTask = () => {
@@ -28,7 +47,14 @@ class NewProject extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    this.props.createProject(this.state)
+    debugger
+    const {match: {params}} = this.props;
+    if (params.projectID){
+      this.props.updateProject(this.state, params.projectID)
+    }
+    else {
+      this.props.createProject(this.state)
+    }
   }
 
   handleChange = (event) => this.setState({...this.state, [event.target.name]: event.target.value})
@@ -43,14 +69,14 @@ class NewProject extends Component {
         <Grid.Row stretched>
           <Grid.Column>
             <Segment>
-              <Header as="h3" color="blue" textAlign="center">New Project</Header> <hr />
+              <Header as="h3" color="blue" textAlign="center">Project</Header> <hr />
               <Form onSubmit={this.handleSubmit}>
                 <Form.Field>
                   <label>Owner:  {this.props.userInfo.username}</label>
                 </Form.Field>
                 <Form.Field>
                   <label>Project Title</label>
-                  <input name='name' onChange={this.handleChange} value={this.state.name} placeholder='Title' />
+                  <input name='title' onChange={this.handleChange} value={this.state.title} placeholder='Title' />
                 </Form.Field>
                 <Form.Field>
                   <label>Description</label>
@@ -78,11 +104,11 @@ class NewProject extends Component {
           <Grid.Column>
             {this.state &&
               <Segment secondary>
-                <Header as="h3" color="blue" textAlign="center">Project Preview</Header> <hr />
+                <Header as="h3" color="blue" textAlign="center">Review</Header> <hr />
                 <Header as="h4">Owner</Header>
                 <Label as='a' image><img src={this.props.userInfo.image} alt='img'/>{this.props.userInfo.username}</Label>
                 <Header as="h4">Title</Header>
-                <p>{this.state.name}</p>
+                <p>{this.state.title}</p>
                 <Header as="h4">Description</Header>
                 <p>{this.state.description}</p>
                 <Form>
@@ -107,7 +133,7 @@ class NewProject extends Component {
                         </Table.Cell>
                         <Table.Cell>{task.content}</Table.Cell>
                         <Table.Cell>
-                          <Icon name="delete" onClick={(i) => this.handleDeleteTask(task.user_id)}/>
+                          <Icon name="delete" onClick={() => this.handleDeleteTask(task.user_id)}/>
                         </Table.Cell>
                       </Table.Row>
                     )}
@@ -131,7 +157,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    createProject: (project) => dispatch(createNewProject(project))
+    createProject: (project, id) => dispatch(createNewProject(project, id)),
+    updateProject: (project) => dispatch(updateProject(project))
   }
 }
 
