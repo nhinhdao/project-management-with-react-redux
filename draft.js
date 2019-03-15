@@ -21,3 +21,9 @@ open={this.state.modalOpen} onClose={this.handleClose}>
 
 import Timeline from 'react-calendar-timeline'
 import 'react-calendar-timeline/lib/Timeline.css'
+
+if (!localStorage.getItem("userID")) {
+  debugger
+  this.props.history.push('/login');
+  return null;
+}
