@@ -20,8 +20,8 @@ export function getAllProjects(id) {
 
 export function createNewProject(project) {
   let newProject = {
-    owner_id: project.owner_id, title: project.name, description: project.description,
-    start_date: getDate(project.start_date), end_date: getDate(project.end_date), tasks: project.tasks
+    owner_id: project.owner.id, title: project.title, description: project.description,
+    start_date: project.start_date, end_date: project.end_date, tasks: project.tasks
   }
   const url = 'http://localhost:3001/api/v1/projects'
   return dispatch => {
@@ -45,16 +45,17 @@ export function createNewProject(project) {
   }
 }
 
-export function updateProject(project, id) {
+export function updateProject(project) {
   let editProject = {
-    owner_id: project.owner_id, title: project.name, description: project.description,
-    start_date: getDate(project.start_date), end_date: getDate(project.end_date), tasks: project.tasks
+    id: project.project_id, title: project.title, description: project.description,
+    start_date: project.start_date, end_date: project.end_date, tasks: project.tasks
   }
-  const url = `http://localhost:3001/api/v1/projects/${id}`
+  const url = `http://localhost:3001/api/v1/projects/${project.project_id}`
+  debugger
   return dispatch => {
     dispatch({ type: "LOADING_API" });
     return fetch(url, {
-      method: 'POST',
+      method: 'PATCH',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -154,8 +155,4 @@ export function register(user) {
       }
     });
   }
-}
-
-function getDate(date) {
-  return `${date.getFullYear()}-${date.getDate()}-${date.getMonth()}`
 }

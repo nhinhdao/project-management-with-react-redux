@@ -15,7 +15,7 @@ export default function getUserInfoReducer(state = {user: {}, users: [], error: 
       user = {id: resp.id, username: resp.username, email: resp.email, image: resp.image, project_count: resp.projects.length, task_count: resp.tasks.length}
       return { ...state, user: user, error: false, loading: false }
     case "SIGN_OUT":
-      return {...state, user: {}, users: [], error: false, loading: true}
+      return {...state, user: {}, users: [], error: false, loading: false}
     case "SIGN_IN_ERROR":
       return {...state, error: true}
     default:

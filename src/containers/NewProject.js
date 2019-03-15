@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Form, Grid, Segment, Header, Label, Image, Table, Icon} from 'semantic-ui-react';
+import {Form, Grid, Segment, Header, Label, Image, Table, Icon, Button} from 'semantic-ui-react';
 import {createNewProject, updateProject} from '../actions/APIsearch';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
@@ -9,11 +9,13 @@ class NewProject extends Component {
   constructor () {
     super();
     this.state = {
-      owner_id: 1, title: '', description: '', start_date: new Date(), end_date: new Date(), content: '', user_id: 1, tasks: []
+      project_id: null, title: '', description: '', start_date: new Date(), end_date: new Date(), content: '', user_id: 1, owner: {}, tasks: []
     };
     this.handleAddTask = this.handleAddTask.bind(this);
     this.handleDeleteTask = this.handleDeleteTask.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
+
 
   componentDidMount(){
     const {match: {params}} = this.props;
@@ -26,9 +28,10 @@ class NewProject extends Component {
           start_date = project.start_date + ' ';
           end_date = project.end_date + ' ';
           this.setState({
-          owner_id: project.id, title: project.title, description: project.description,
+          project_id: project.id, title: project.title, description: project.description,
           start_date: new Date(start_date), end_date: new Date(end_date),
-          content: '', user_id: 1, tasks: tasks})
+          content: '', user_id: 1, owner: project.owner, tasks: tasks
+          })
       });
     }
     else {this.setState({...this.state})}
@@ -36,7 +39,8 @@ class NewProject extends Component {
 
   handleAddTask = () => {
     const user = this.props.allUsers.find(user => user.id === this.state.user_id);
-    this.setState({...this.state, owner_id: this.props.userInfo.id, tasks: [...this.state.tasks, {content: this.state.content, user_id: user.id, user_username: user.username, user_image: user.image}]})
+    this.setState({...this.state, owner: {...this.state.owner, id: this.props.userInfo.id},
+       tasks: [...this.state.tasks, {content: this.state.content, user_id: user.id, user_username: user.username, user_image: user.image}]})
     this.setState({content: ''});
   }
 
@@ -47,18 +51,19 @@ class NewProject extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    debugger
-    const {match: {params}} = this.props;
-    if (params.projectID){
-      this.props.updateProject(this.state, params.projectID)
+    if (this.state.project_id){
+      this.props.updateProject(this.state, this.state.project_id)
+      this.props.history.push("/projects")
     }
     else {
       this.props.createProject(this.state)
+      this.props.history.push("/projects")
     }
   }
 
   handleChange = (event) => this.setState({...this.state, [event.target.name]: event.target.value})
-  onChangeStart = date => this.setState({start_date: date})
+  handleCancelChange = () => this.props.history.push('/projects')
+  onChangeStart = date => this.setState({start_date: date, end_date: date})
   onChangeEnd = date => this.setState({end_date: date})
   onChangeUser = (e, {value}) => this.setState({user_id: value})
   
@@ -70,10 +75,13 @@ class NewProject extends Component {
           <Grid.Column>
             <Segment>
               <Header as="h3" color="blue" textAlign="center">Project</Header> <hr />
+              <Header as="h4">Owner</Header>
+              { this.state.owner.image ? 
+                <Label as='a' image><img src={this.state.owner.image} alt='img'/>{this.state.owner.username}</Label> :
+                <Label as='a' image><img src={this.props.userInfo.image} alt='img'/>{this.props.userInfo.username}</Label>
+              }
+              <br/><br/>
               <Form onSubmit={this.handleSubmit}>
-                <Form.Field>
-                  <label>Owner:  {this.props.userInfo.username}</label>
-                </Form.Field>
                 <Form.Field>
                   <label>Project Title</label>
                   <input name='title' onChange={this.handleChange} value={this.state.title} placeholder='Title' />
@@ -97,7 +105,9 @@ class NewProject extends Component {
                   <Form.Select label='Assign User' options={users} placeholder='User' onChange={this.onChangeUser}/>
                   <Label onClick={this.handleAddTask}><Icon name="plus"/>Add</Label>
                 </Form.Group>
-                <Form.Button color='blue' type='submit'>Submit</Form.Button>
+                <Form.Group inline>
+                  <Form.Button color='blue' type='submit'>Submit</Form.Button>{this.props.match.params.projectID && <Button type='button' onClick={this.handleCancelChange}>Cancel</Button>}
+                </Form.Group>
               </Form>
             </Segment>
           </Grid.Column>
@@ -106,7 +116,10 @@ class NewProject extends Component {
               <Segment secondary>
                 <Header as="h3" color="blue" textAlign="center">Review</Header> <hr />
                 <Header as="h4">Owner</Header>
+                { this.state.owner.image ? 
+                <Label as='a' image><img src={this.state.owner.image} alt='img'/>{this.state.owner.username}</Label> :
                 <Label as='a' image><img src={this.props.userInfo.image} alt='img'/>{this.props.userInfo.username}</Label>
+                }
                 <Header as="h4">Title</Header>
                 <p>{this.state.title}</p>
                 <Header as="h4">Description</Header>
@@ -157,7 +170,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    createProject: (project, id) => dispatch(createNewProject(project, id)),
+    createProject: (project) => dispatch(createNewProject(project)),
     updateProject: (project) => dispatch(updateProject(project))
   }
 }

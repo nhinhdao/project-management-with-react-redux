@@ -21,12 +21,7 @@ class MyPage extends Component {
     fetch(`http://localhost:3001/api/v1/users/${id}`)
     .then(resp => resp.json()).then(resp => this.setState({
       ...this.state,
-      user: {
-        ...this.state.user,
-        username: resp.username,
-        email: resp.email,
-        image: resp.image
-      }
+      user: { ...this.state.user, username: resp.username, email: resp.email, image: resp.image }
     }))
   }
 

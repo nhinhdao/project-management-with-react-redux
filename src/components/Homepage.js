@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link, Redirect, Switch} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Redirect} from 'react-router-dom';
 import { getAllUsers, getAllProjects, signOut } from '../actions/APIsearch';
 import { Sidebar, Menu, Icon, Image } from 'semantic-ui-react';
 import projectmanagementPane from '../images/projectmanagementPane.png';
@@ -41,17 +41,17 @@ class Homepage extends Component {
             <Sidebar as={Menu} inverted visible vertical width="thin" icon="labeled">
               <Link to="/"><Menu.Item name="title"><Image wrapped size="tiny" src={projectmanagementPane}/></Menu.Item></Link>
               <Link to="/"><Menu.Item name="users"><Icon name="home" />Home</Menu.Item></Link>
-              <Link to="/projects/new"><Menu.Item name="newproject"><Icon name="plus" />New Project</Menu.Item></Link>
+              <Link to="/newproject"><Menu.Item name="newproject"><Icon name="plus" />New Project</Menu.Item></Link>
               <Link to="/projects"><Menu.Item name="timeline"><Icon name="calendar times outline" />TimeLine</Menu.Item></Link>
               <Link to="/users"><Menu.Item name="users"><Icon name="users" />Users</Menu.Item></Link>
               <Menu.Item name="logout" onClick={this.handleLogout}><Icon name="power" />Logout</Menu.Item>
             </Sidebar>
             <Route exact path="/" component={MyPage} />
             <Route exact path="/users" component={UsersPage} />
-            <Route exact path="/projects" component={ProjectTimeline} />
-            <Route exact path="/projects/new" component={NewProject} />
-            <Route exact path="/projects/:projectID" component={ProjectPage} />
-            <Route exact path="/projects/:projectID/edit" component={NewProject} />
+            <Route exact path="/newproject" component={NewProject} />
+            <Route path="/projects" component={ProjectTimeline} />
+            <Route path="/projects/:projectID" component={ProjectPage} />
+            <Route exact path="/editproject/:projectID" component={NewProject} />
           </React.Fragment>
         </Router>
       </div>
