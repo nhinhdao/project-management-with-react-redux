@@ -5,18 +5,17 @@ import SignInForm from '../containers/SignInForm';
 import RegisterForm from '../containers/RegisterForm';
 import { Image, Grid, Header,  Segment } from 'semantic-ui-react';
 import { connect } from 'react-redux';
+import {Redirect} from 'react-router-dom';
 
 class WelcomePage extends Component {
   state = {register: false, error: false};
 
   handleSignIn = user => {
-    this.props.signIn(user);
-    this.props.history.push('/');
+    this.props.signIn(user)  
   }
 
   handleRegister = user => {
     this.props.register(user);
-    this.props.history.push('/');
   }
 
   toggleRegister = () => {
@@ -24,6 +23,9 @@ class WelcomePage extends Component {
   }
 
   render() {
+    if (localStorage.getItem("userID")) {
+      return <Redirect to='/'/>;
+    }
     return (
       <div>
         <Grid centered columns={2}>

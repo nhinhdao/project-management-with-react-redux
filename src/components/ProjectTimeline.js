@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import "react-datepicker/dist/react-datepicker.css";
 import randomColor from 'randomcolor';
 import {Link} from 'react-router-dom';
+import {Segment, Header, Button} from 'semantic-ui-react';
 
 class ProjectTimeline extends Component {
   state = { projects: []}
@@ -43,15 +44,22 @@ class ProjectTimeline extends Component {
     )
     
     return(
-      <Timeline groups={groups}
-      items={items}
-      sidebarContent={<h3>Project</h3>}
-      itemRenderer={this.itemRenderer}
-      itemHeightRatio={0.7}
-      defaultTimeStart={moment('2019-03-08')}
-      defaultTimeEnd={moment('2019-04-08')}
-      lineHeight={35}
-      />
+      <React.Fragment>
+        <Timeline groups={groups}
+        items={items}
+        sidebarContent={<h3>Project</h3>}
+        itemRenderer={this.itemRenderer}
+        itemHeightRatio={0.7}
+        defaultTimeStart={moment('2019-03-08')}
+        defaultTimeEnd={moment('2019-04-08')}
+        lineHeight={35}
+        />
+        {this.state.projects.length === 0 && 
+          <Segment color='blue'>
+            <Header as='h5' color='red'>You have no project at the moment. Please add project to continue!</Header>
+            <Link to={`/newproject`}><Button color='green'>Add New Project</Button></Link>
+          </Segment>}
+      </React.Fragment>
     )
   }
 }

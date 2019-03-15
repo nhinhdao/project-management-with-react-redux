@@ -4,6 +4,7 @@ import {createNewProject, updateProject} from '../actions/APIsearch';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import {connect} from 'react-redux';
+import { Redirect } from 'react-router-dom'
 
 class NewProject extends Component {
   constructor () {
@@ -52,12 +53,14 @@ class NewProject extends Component {
   handleSubmit = event => {
     event.preventDefault();
     if (this.state.project_id){
-      this.props.updateProject(this.state, this.state.project_id)
-      this.props.history.push("/projects")
+      this.props.updateProject(this.state, this.state.project_id);
+      // this.props.history.push("/projects")
+      return <Redirect to='/projects' />
     }
     else {
-      this.props.createProject(this.state)
+      this.props.createProject(this.state);
       this.props.history.push("/projects")
+      // <Redirect to='/projects' />
     }
   }
 
