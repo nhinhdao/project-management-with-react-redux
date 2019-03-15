@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Grid, Segment, Header, Label, Image, Button, Form} from 'semantic-ui-react';
+import {Grid, Segment, Header, Label, Button, Form} from 'semantic-ui-react';
 import {connect} from 'react-redux';
 import {updateUserAccount, } from '../actions/APIsearch';
 
@@ -54,7 +54,7 @@ class MyPage extends Component {
           <hr/>
           <Label as='a' color='red' ribbon>Overview</Label>
           <span>Account Details</span>
-          {user.image ? <Image src={user.image}/> : <Image src='https://i.imgur.com/NbwnI6C.jpg' />}
+          <img src={user.image} alt='User Profile' className='avatar'/>
           <Segment color='blue'>
             <Header as='h4' color='blue'>{user.username}</Header>
             <p><strong>{user.email}</strong></p>
@@ -72,7 +72,7 @@ class MyPage extends Component {
                 <Form.Input label='Password Confirmation' type='password' name='password_confirmation' value={user.password_confirmation} placeholder='Password Confirmation' onChange={this.handleUpdateInformation} required/>
               </Form.Group>
               {this.state.errors && <Header as='h5' color='red'>Passwords do not match/present. Please try again!</Header>}
-              <Form.Input label='Link to your profile picture' name='image' value={user.image} placeholder='Picture of size 200x200 if possible' onChange={this.handleUpdateInformation}/>
+              <Form.Input label='Link to your profile picture' name='image' placeholder='Picture of size 200x200 if possible' onChange={this.handleUpdateInformation}/>
               <Button type='submit' color='blue'>Update</Button><Button type='button' onClick={this.handleClick}>Cancel</Button>
             </Form>
            }

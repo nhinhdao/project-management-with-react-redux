@@ -151,7 +151,7 @@ export function register(user) {
         // Update redux sore with return data
         dispatch({type: 'REGISTER_NEW_USER', resp});
       } else {
-        dispatch({ type: "REGISTER_USER_ERROR", errors: resp.errors });
+        dispatch({ type: "SIGN_IN_ERROR", errors: resp.errors });
       }
     });
   }

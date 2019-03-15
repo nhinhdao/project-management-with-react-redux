@@ -38,7 +38,7 @@ class ProjectTimeline extends Component {
         id: project.id, group: index + 1, title: project.description, 
         start_time: moment(project.start_date), end_time: moment(project.end_date),
         canMove: false, canResize: false, canChangeGroup: false,
-        bgColor: randomColor({luminosity: "light", format: "rgba", alpha: 0.5})
+        bgColor: randomColor({luminosity: "light", format: "rgba", alpha: 0.8})
       })}
     )
     

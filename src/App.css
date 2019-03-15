@@ -1,8 +1,15 @@
+img.avatar{
+  max-width: 200px;
+  max-height: 200px;
+}
 
 div.react-calendar-timeline .rct-outer .rct-sidebar .rct-sidebar-header {
   align-items: center
 }
+div.react-calendar-timeline .rct-items .rct-item{
+  background: #ddd;
+}
 
-div.react-calendar-timeline .rct-outer .rct-items .rct-item .rct-item-overflow .rct-item-content{
+div.react-calendar-timeline .rct-outer .rct-items .rct-item .rct-item-overflow .rct-item-content {
   padding: 0;
 }

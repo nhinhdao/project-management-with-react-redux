@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { signIn, register } from '../actions/APIsearch';
-import projectmanagement from '../images/projectmanagement.png';
+import welcomePage from '../images/welcomePage.png';
 import SignInForm from '../containers/SignInForm';
 import RegisterForm from '../containers/RegisterForm';
 import { Image, Grid, Header,  Segment } from 'semantic-ui-react';
@@ -30,29 +30,21 @@ class WelcomePage extends Component {
           <Grid.Row></Grid.Row><Grid.Row></Grid.Row>
           <Grid.Row>
             <Grid.Column width={7}>
-              <Image centered src={projectmanagement} alt='Project Management Logo'/>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column width={2}>
-              <Segment onClick={this.toggleRegister}><Header as="h3" color="blue" textAlign="center">
-              Log In
-            </Header></Segment>
-            </Grid.Column>
-            <Grid.Column width={2}>
-              <Segment onClick={this.toggleRegister}><Header as="h3" color="blue" textAlign="center">
-              Register
-            </Header></Segment>
+              <Image size='big' centered src={welcomePage} alt='Project Management Logo'/>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
             <Grid.Column width={4}>
+              <Segment.Group horizontal>
+                <Segment onClick={this.toggleRegister}><Header as="h3" color="blue" textAlign="center">Log In</Header></Segment>
+                <Segment onClick={this.toggleRegister}><Header as="h3" color="blue" textAlign="center">Register</Header></Segment>
+              </Segment.Group>
               {this.state.register ? <RegisterForm handleRegister={this.handleRegister}/> : <SignInForm handleSignIn={this.handleSignIn}/>}
             </Grid.Column>
           </Grid.Row>
           {this.state.error &&
           <Grid.Row>
-            <Grid.Column width={4}>
+            <Grid.Column width={6}>
               <Header as='h3' color='red'>Incorrect Username/Password</Header>
             </Grid.Column>
           </Grid.Row>}
