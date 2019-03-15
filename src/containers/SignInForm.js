@@ -19,7 +19,6 @@ class SignInForm extends Component {
   handleSubmit = event => {
     event.preventDefault();
     this.props.handleSignIn(this.state)
-    this.setState({username: '', password: ''})
   }
 
   render() {
@@ -27,24 +26,11 @@ class SignInForm extends Component {
       <React.Fragment>
         <Segment>
           <Form size="large" onSubmit={this.handleSubmit}>
-            <Form.Input
-              fluid
-              icon="user"
-              iconPosition="left"
-              placeholder="Username"
-              onChange={this.handleChange} name='username' value={this.state.username}
-            />
-            <Form.Input 
-              fluid
-              icon="lock"
-              iconPosition="left"
-              placeholder="Password"
-              type="password"
-              onChange={this.handleChange} name='password' value={this.state.password}
-            />
-            <Button typr='submit' color="blue" fluid size="large">
-              Log In
-            </Button>
+            <Form.Input fluid icon="user" iconPosition="left" placeholder="Username"
+              onChange={this.handleChange} name='username' value={this.state.username} required />
+            <Form.Input  fluid icon="lock" iconPosition="left" placeholder="Password" type="password"
+              onChange={this.handleChange} name='password' value={this.state.password} required />
+            <Button type='submit' color="blue" fluid size="large">Log In</Button>
           </Form>
         </Segment>
       </React.Fragment>

@@ -33,7 +33,9 @@ class Homepage extends Component {
   }
 
   render() {
-    if (!localStorage.getItem("userID")) {return <Redirect to = "/login"/>}
+    if (!localStorage.getItem("userID")) {
+      return <Redirect to="/login"/>
+    }
     return (
       <div style={style}>
         <Router>
@@ -46,7 +48,7 @@ class Homepage extends Component {
               <Link to="/users"><Menu.Item name="users"><Icon name="users" />Users</Menu.Item></Link>
               <Menu.Item name="logout" onClick={this.handleLogout}><Icon name="power" />Logout</Menu.Item>
             </Sidebar>
-            <Route exact path="/" component={MyPage} />
+            <Route exact path="/" render={routerProps => <MyPage {...routerProps} user={this.props.userInfo}/> } />
             <Route exact path="/users" component={UsersPage} />
             <Route exact path="/newproject" component={NewProject} />
             <Route path="/projects" component={ProjectTimeline} />

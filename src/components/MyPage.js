@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import {Grid, Segment, Header, Label, Button, Form} from 'semantic-ui-react';
+import {Grid, Segment, Header, Label, Image, Button, Form} from 'semantic-ui-react';
 import {connect} from 'react-redux';
 import {updateUserAccount, } from '../actions/APIsearch';
 
 
 class MyPage extends Component {
-  constructor () {
-    super();
+  constructor (props) {
+    super(props);
     this.state = {
       user: {username: '', email: '', password: '', password_confirmation: '', image: ''},
       updateAccount: false,
@@ -54,7 +54,7 @@ class MyPage extends Component {
           <hr/>
           <Label as='a' color='red' ribbon>Overview</Label>
           <span>Account Details</span>
-          <img src={user.image} alt='User Profile' className='avatar'/>
+          <Image src={user.image}/>
           <Segment color='blue'>
             <Header as='h4' color='blue'>{user.username}</Header>
             <p><strong>{user.email}</strong></p>
