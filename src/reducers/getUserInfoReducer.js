@@ -9,7 +9,7 @@ export default function getUserInfoReducer(state = defaultState, action) {
       return {...state, user: user, error: false, loading: false}
     case "REGISTER_NEW_USER":
     resp = action.resp;
-    user = {id: resp.id, username: resp.username, email: resp.email, image: '', project_count: 0, task_count: 0}
+    user = {id: resp.id, username: resp.username, email: resp.email, image: resp.image, project_count: resp.projects.length, task_count: resp.tasks.length}
     return {...state, user: user, error: false, loading: false}
     case "GET_ALL_USERS":
       resp = action.payload.map(data => data = {id: data.id, username: data.username, email: data.email, image: data.image, project_count: data.projects.length, task_count: data.tasks.length})

@@ -1,3 +1,5 @@
+import history from '../components/history';
+
 export function getAllUsers() {
   const url = `http://localhost:3001/api/v1/users/`
   return dispatch => {
@@ -110,6 +112,7 @@ export function signIn(user) {
         localStorage.setItem("userID", parseInt(resp.id))
         // Update redux sore with return data
         dispatch({type: 'SIGN_IN', resp});
+        history.push("/")
       } else {
         dispatch({ type: "SIGN_IN_ERROR", errors: resp.errors });
       }})
@@ -150,6 +153,7 @@ export function register(user) {
         localStorage.setItem("userID", resp.id)
         // Update redux sore with return data
         dispatch({type: 'REGISTER_NEW_USER', resp});
+        history.push("/");
       } else {
         dispatch({ type: "SIGN_IN_ERROR", errors: resp.errors });
       }
