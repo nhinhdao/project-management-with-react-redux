@@ -18,12 +18,8 @@ class RegisterForm extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    debugger
-    if(Object.values(this.state.user).includes("")){
-      this.setState({error: 'Please provide all inputs!'})
-    } 
-    else if (this.state.user.password !== this.state.user.password_confirmation) {
-      this.setState({error: 'Passwords do not match. Please try again!'})
+    if (this.state.user.password !== this.state.user.password_confirmation) {
+      this.setState({error: 'Sorry! Passwords do not match.'})
     } 
     else {
       this.props.handleRegister(this.state.user)

@@ -1,7 +1,7 @@
 export default function getAllProjectsReducer(state = { projects: [], project: {}, loading: false }, action) {
   let places, singlePlace, data;
   switch (action.type) {
-    case 'LOADING_QUERY':
+    case 'LOADING_API':
       return { ...state, loading: true}
     case 'GET_ALL_PROJECTS':
       data = action.payload.map(project => 

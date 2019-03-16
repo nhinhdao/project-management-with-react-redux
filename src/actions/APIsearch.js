@@ -40,6 +40,7 @@ export function createNewProject(project) {
       if (resp.id) {
         // Update redux sore with return data
         dispatch({type: 'ADD_PROJECT_TO_STORE', resp});
+        history.push(`/projects/${resp.id}`)
       } else {
         dispatch({ type: "ADD_PROJECT_ERROR", errors: resp.errors });
       }
@@ -53,7 +54,6 @@ export function updateProject(project) {
     start_date: project.start_date, end_date: project.end_date, tasks: project.tasks
   }
   const url = `http://localhost:3001/api/v1/projects/${project.project_id}`
-  debugger
   return dispatch => {
     dispatch({ type: "LOADING_API" });
     return fetch(url, {
@@ -68,6 +68,7 @@ export function updateProject(project) {
       if (resp.id) {
         // Update redux sore with return data
         dispatch({type: 'ADD_PROJECT_TO_STORE', resp});
+        // history.push(`/projects/${resp.id}`)
       } else {
         dispatch({ type: "ADD_PROJECT_ERROR", errors: resp.errors });
       }

@@ -4,17 +4,19 @@ import {createNewProject, updateProject} from '../actions/APIsearch';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import {connect} from 'react-redux';
-import { Redirect } from 'react-router-dom'
 
 class NewProject extends Component {
   constructor () {
     super();
-    this.state = {
-      project_id: null, title: '', description: '', start_date: new Date(), end_date: new Date(), content: '', user_id: 1, owner: {}, tasks: []
-    };
+    this.state = { project_id: null, title: '', description: '', start_date: new Date(), end_date: new Date(), content: '', user_id: 1, owner: {}, tasks: [] };
     this.handleAddTask = this.handleAddTask.bind(this);
     this.handleDeleteTask = this.handleDeleteTask.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleCancelChange = this.handleCancelChange.bind(this);
+    this.onChangeEnd = this.onChangeEnd.bind(this);
+    this.onChangeStart = this.onChangeStart.bind(this);
+    this.onChangeUser = this.onChangeUser.bind(this);
   }
 
 
@@ -38,37 +40,34 @@ class NewProject extends Component {
     else {this.setState({...this.state})}
   }
 
-  handleAddTask = () => {
+  handleAddTask(){
     const user = this.props.allUsers.find(user => user.id === this.state.user_id);
     this.setState({...this.state, owner: {...this.state.owner, id: this.props.userInfo.id},
        tasks: [...this.state.tasks, {content: this.state.content, user_id: user.id, user_username: user.username, user_image: user.image}]})
     this.setState({content: ''});
   }
 
-  handleDeleteTask = (id) => {
+  handleDeleteTask(id){
     let index = this.state.tasks.findIndex(task => task.user_id === id)
     this.setState({...this.state, tasks: this.state.tasks.slice(0, index).concat(this.state.tasks.slice(index+1))})
   }
 
-  handleSubmit = event => {
+  handleSubmit(event){
     event.preventDefault();
+    const { history } = this.props;
     if (this.state.project_id){
-      this.props.updateProject(this.state, this.state.project_id);
-      // this.props.history.push("/projects")
-      return <Redirect to='/projects' />
+      this.props.updateProject(this.state).then(()=> history.push("/projects"))
     }
     else {
-      this.props.createProject(this.state);
-      this.props.history.push("/projects")
-      // <Redirect to='/projects' />
+      this.props.createProject(this.state).then(() => history.push("/projects"))
     }
   }
 
-  handleChange = (event) => this.setState({...this.state, [event.target.name]: event.target.value})
-  handleCancelChange = () => this.props.history.push('/projects')
-  onChangeStart = date => this.setState({start_date: date, end_date: date})
-  onChangeEnd = date => this.setState({end_date: date})
-  onChangeUser = (e, {value}) => this.setState({user_id: value})
+  handleChange(event){this.setState({...this.state, [event.target.name]: event.target.value})}
+  handleCancelChange(){this.props.history.push('/projects')}
+  onChangeStart(date){this.setState({start_date: date, end_date: date})}
+  onChangeEnd(date){this.setState({end_date: date})}
+  onChangeUser(e, {value}){this.setState({user_id: value})}
   
   render() {
     const users = this.props.allUsers.map(user => user = {key: user.id, text: user.username, value: user.id, image: {avatar: true, src: user.image}});
@@ -100,12 +99,12 @@ class NewProject extends Component {
                   <label>End Date</label>
                   <DatePicker onChange={this.onChangeEnd} selected={this.state.end_date} />
                 </Form.Group>
-                <Form.Field>
+                <Form.Field required>
                   <label>Add Tasks</label>
                   <input placeholder='Content' name='content' value={this.state.content} onChange={this.handleChange}/>
                 </Form.Field>
                 <Form.Group inline>
-                  <Form.Select label='Assign User' options={users} placeholder='User' onChange={this.onChangeUser}/>
+                  <Form.Select label='Assign User' options={users} placeholder='User' onChange={this.onChangeUser} required/>
                   <Label onClick={this.handleAddTask}><Icon name="plus"/>Add</Label>
                 </Form.Group>
                 <Form.Group inline>

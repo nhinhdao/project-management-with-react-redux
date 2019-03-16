@@ -8,17 +8,24 @@ import { connect } from 'react-redux';
 import {Redirect} from 'react-router-dom';
 
 class WelcomePage extends Component {
-  state = {register: false, error: false};
+  constructor(){
+    super();
+    this.state = {register: false, error: false};
+    this.handleSignIn = this.handleSignIn.bind(this);
+    this.handleRegister = this.handleRegister.bind(this);
+    this.toggleRegister = this.toggleRegister.bind(this)
+  }
+  
 
-  handleSignIn = user => {
+  handleSignIn(user){
     this.props.signIn(user)  
   }
 
-  handleRegister = user => {
+  handleRegister(user){
     this.props.register(user);
   }
 
-  toggleRegister = () => {
+  toggleRegister(){
     this.setState({register: !this.state.register})
   }
 
@@ -44,10 +51,10 @@ class WelcomePage extends Component {
               {this.state.register ? <RegisterForm handleRegister={this.handleRegister}/> : <SignInForm handleSignIn={this.handleSignIn}/>}
             </Grid.Column>
           </Grid.Row>
-          {this.state.error &&
+          {this.props.error &&
           <Grid.Row>
-            <Grid.Column width={6}>
-              <Header as='h3' color='red'>Incorrect Username/Password</Header>
+            <Grid.Column width={4}>
+              <Header as='h3' color='red' textAlign='center'>Incorrect Username/Password</Header>
             </Grid.Column>
           </Grid.Row>}
         </Grid>

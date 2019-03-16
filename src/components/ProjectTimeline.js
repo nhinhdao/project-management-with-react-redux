@@ -5,14 +5,12 @@ import {connect} from 'react-redux';
 import "react-datepicker/dist/react-datepicker.css";
 import randomColor from 'randomcolor';
 import {Link} from 'react-router-dom';
-import {Segment, Header, Button} from 'semantic-ui-react';
+import {Button} from 'semantic-ui-react';
 
 class ProjectTimeline extends Component {
   state = { projects: []}
 
   componentDidMount(){
-    console.log("Mount timeline");
-    
     const id = localStorage.getItem('userID')
     fetch(`http://localhost:3001/api/v1/allprojects/${id}`)
         .then(response => response.json())
@@ -45,6 +43,10 @@ class ProjectTimeline extends Component {
     
     return(
       <React.Fragment>
+        <div>
+          <Button size='small' color='grey'>Projects: {this.state.projects.length}</Button> <Link to={`/newproject`}><Button size='small' color='teal'>Add New Project</Button></Link>
+        </div>
+        <hr/>
         <Timeline groups={groups}
         items={items}
         sidebarContent={<h3>Project</h3>}
@@ -54,11 +56,6 @@ class ProjectTimeline extends Component {
         defaultTimeEnd={moment('2019-04-08')}
         lineHeight={35}
         />
-        {this.state.projects.length === 0 && 
-          <Segment color='blue'>
-            <Header as='h5' color='red'>You have no project at the moment. Please add project to continue!</Header>
-            <Link to={`/newproject`}><Button color='green'>Add New Project</Button></Link>
-          </Segment>}
       </React.Fragment>
     )
   }

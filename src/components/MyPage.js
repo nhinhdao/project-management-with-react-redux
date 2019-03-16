@@ -12,8 +12,9 @@ class MyPage extends Component {
       updateAccount: false,
       errors: false
     };
-    this.handleUpdateInformation = this.handleUpdateInformation.bind(this)
+    this.handleClick=this.handleClick.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleUpdateInformation = this.handleUpdateInformation.bind(this)
   }
 
   componentDidMount(){
@@ -25,17 +26,17 @@ class MyPage extends Component {
     }))
   }
 
-  handleClick = () => {
+  handleClick(){
     this.setState({updateAccount: !this.state.updateAccount, errors: false})
   }
 
-  handleUpdateInformation = (event) => {
+  handleUpdateInformation(event){
     const {name, value} = event.target
     if (value !== ''){this.setState({...this.state, user:{...this.state.user, [name]: value}})}
   }
 
 
-  handleSubmit = event => {
+  handleSubmit(event){
     event.preventDefault();
     if (this.state.user.password && this.state.user.password === this.state.user.password_confirmation) {
       this.props.updateUserAccount(this.state.user);

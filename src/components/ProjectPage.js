@@ -8,13 +8,27 @@ import {connect} from 'react-redux';
 class ProjectPage extends Component {
   constructor(props){
     super(props);
-    this.state = {project: {}, date: new Date()}
+    this.state = {project: {}, date: new Date()};
+    this.handleChange = this.handleChange.bind(this)
   }
 
-  handleChange = (date) => this.setState({ date: date })
+  componentDidMount(){
+    console.log('didMount projectpage');
+    const {match: {params}} = this.props;
+    fetch(`http://localhost:3001/api/v1/projects/${params.projectID}`)
+      .then(response => response.json())
+      .then(project => this.setState({...this.state, project: project}))
+  }
+
+  // shouldComponentUpdate(nextProps, nextState) {debugger
+  //   return this.state.date !== nextState.date;
+  // }
+
+  handleChange(date){this.setState({ date: date })}
 
   render(){
-    const project = this.props.projects.find(project => project.id === parseInt(this.props.match.params.projectID));
+    const project = this.state.project.length > 0 ? this.state.project : this.props.projects.find(project => project.id === parseInt(this.props.match.params.projectID));
+    // const {project} = this.state
     const start_date = new Date(project.start_date + " ");
     const end_date = new Date(project.end_date + " ");
     return(
@@ -54,7 +68,7 @@ class ProjectPage extends Component {
           </Modal.Description>
         </Modal.Content>
         <Modal.Actions>
-          <Link to={`/editproject/${project.id}`}><Button positive>Edit</Button></Link>
+          {project.owner.id === parseInt(localStorage.getItem("userID")) ? <Link to={`/editproject/${project.id}`}><Button positive>Edit</Button></Link> : null}
           <Link to="/projects"><Button>Close</Button></Link>
         </Modal.Actions>
       </Modal>
