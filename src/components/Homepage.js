@@ -3,11 +3,11 @@ import { BrowserRouter as Router, Route, Link, Redirect} from 'react-router-dom'
 import { getAllUsers, getAllProjects, signOut } from '../actions/APIsearch';
 import { Sidebar, Menu, Icon, Image } from 'semantic-ui-react';
 import projectmanagementPane from '../images/projectmanagementPane.png';
-import NewProject from '../containers/NewProject';
+import NewProject from './NewProject';
+import EditProject from './EditProject';
 import UsersPage from './UsersPage';
-import ProjectTimeline from './ProjectTimeline';
+import AllProjects from './AllProjects';
 import MyPage from './MyPage';
-import ProjectPage from './ProjectPage';
 import {connect} from 'react-redux';
 
 /* Add style for main compartment */
@@ -53,11 +53,10 @@ class Homepage extends Component {
               <Menu.Item name="logout" onClick={this.handleLogout}><Icon name="power" />Logout</Menu.Item>
             </Sidebar>
             <Route exact path="/" component={MyPage} />
-            <Route exact path="/users" component={UsersPage} />
-            <Route exact path="/newproject" component={NewProject} />
-            <Route path="/projects" component={ProjectTimeline} />
-            <Route path="/projects/:projectID" component={ProjectPage} />
-            <Route exact path="/editproject/:projectID" component={NewProject} />
+            <Route path="/users" component={UsersPage} />
+            <Route path="/newproject" render={routerProps => <NewProject owner={this.props.userInfo} {...routerProps} />} />
+            <Route path="/projects" component={AllProjects} />
+            <Route path="/editproject/:projectID" render={routerProps => <EditProject projects={this.props.projects} {...routerProps} />} />
           </React.Fragment>
         </Router>
       </div>
@@ -65,7 +64,12 @@ class Homepage extends Component {
   }
 }
 
-const mapStateToProps = state => ({userInfo: state.current_user.user})
+const mapStateToProps = state => {
+  return {
+    userInfo: state.current_user.user,
+    projects: state.allProjects.projects
+  }
+}
 
 const mapDispatchToProps = dispatch => {
   return {

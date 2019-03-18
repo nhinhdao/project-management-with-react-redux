@@ -67,28 +67,3 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
 
-
-import logo from './images/logo.svg';
-<header className="App-header">
-  <img src={logo} className="App-logo" alt="logo" />
-  <span> Project Management </span>
-</header>
-
-<Form.Radio name='status' label='Not Started' value='0' checked={value === '0'} onChange={this.onChangeStatus} />
-<Form.Radio name='status' label='Active' value='1' checked={value === '1'} onChange={this.onChangeStatus} />
-<Form.Radio name='status' label='Completed' value='2' checked={value === '2'} onChange={this.onChangeStatus} />
-<Form.Radio name='status' label='Dismissed' value='3' checked={value === '3'} onChange={this.onChangeStatus} />
-
-<label><input type="radio" name="status" value="0" checked={value==='0'} onChange={this.handleChange}/> Not Started</label>
-<label><input type="radio" name="status" value="1" checked={value==='1'} onChange={this.handleChange}/> Active</label>
-<label><input type="radio" name="status" value="2" checked={value==='2'} onChange={this.handleChange}/> Completed</label>
-<label><input type="radio" name="status" value="3" checked={value==='3'} onChange={this.handleChange}/> Dismissed</label>
-
-
-<Form.Field><label>Status</label></Form.Field>
-<Form.Group inline>
-  <Form.Radio name='status' label='Not Started' value='0' checked={this.state.status === '0'} onChange={this.onChangeStatus} />
-  <Form.Radio name='status' label='Active' value='1' checked={this.state.status === '1'} onChange={this.onChangeStatus} />
-  <Form.Radio name='status' label='Completed' value='2' checked={this.state.status === '2'} onChange={this.onChangeStatus} />
-  <Form.Radio name='status' label='Dismissed' value='3' checked={this.state.status === '3'} onChange={this.onChangeStatus} />
-</Form.Group>

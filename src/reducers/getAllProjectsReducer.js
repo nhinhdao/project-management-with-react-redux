@@ -1,5 +1,5 @@
 export default function getAllProjectsReducer(state = { projects: [], project: {}, loading: false }, action) {
-  let places, singlePlace, data;
+  let data;
   switch (action.type) {
     case 'LOADING_API':
       return { ...state, loading: true}
@@ -21,13 +21,8 @@ export default function getAllProjectsReducer(state = { projects: [], project: {
         tasks: data.tasks
       }
       return { ...state, project: project, loading: false };
-    case 'REMOVE_FROM_MY_LIST':
-      places = [...state.places.map(place => {
-        if (place.id !== action.id) { return place }
-        return { ...place, isAddedToList: false }
-      })];
-      singlePlace = { ...state.singlePlace, isAddedToList: false };
-      return { ...state, places: places, singlePlace: singlePlace, myList: [...state.myList.filter(place => place.id !== action.id)]};
+    case 'DELETE_PROJECT':
+      return { ...state, projects: [...state.projects.filter(project => project.id !== action.projectID)]};
     default:
       return state;
   }

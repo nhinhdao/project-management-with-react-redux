@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
 import {Form, Grid, Segment, Header, Label, Image, Table, Icon, Button} from 'semantic-ui-react';
-import {createNewProject, updateProject} from '../actions/APIsearch';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import {connect} from 'react-redux';
 
-class NewProject extends Component {
-  constructor () {
-    super();
-    this.state = { project_id: null, title: '', description: '', start_date: new Date(), end_date: new Date(), content: '', user_id: 1, owner: {}, tasks: [] };
+class ProjectForm extends Component {
+  constructor (props) {
+    super(props);
+    this.state = props.project;
     this.handleAddTask = this.handleAddTask.bind(this);
     this.handleDeleteTask = this.handleDeleteTask.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -19,31 +18,14 @@ class NewProject extends Component {
     this.onChangeUser = this.onChangeUser.bind(this);
   }
 
-
-  componentDidMount(){
-    const {match: {params}} = this.props;
-    if (params.projectID){
-      let tasks, start_date, end_date;
-      fetch(`http://localhost:3001/api/v1/projects/${params.projectID}`)
-        .then(response => response.json())
-        .then(project => {
-          tasks = project.tasks.map(task => task = {content: task.content, user_id: task.user.id, user_username: task.user.username, user_image: task.user.image});
-          start_date = project.start_date + ' ';
-          end_date = project.end_date + ' ';
-          this.setState({
-          project_id: project.id, title: project.title, description: project.description,
-          start_date: new Date(start_date), end_date: new Date(end_date),
-          content: '', user_id: 1, owner: project.owner, tasks: tasks
-          })
-      });
-    }
-    else {this.setState({...this.state})}
+  componentWillReceiveProps(nextProps) {
+    this.setState({ nextProps });
   }
 
   handleAddTask(){
     const user = this.props.allUsers.find(user => user.id === this.state.user_id);
     this.setState({...this.state, owner: {...this.state.owner, id: this.props.userInfo.id},
-       tasks: [...this.state.tasks, {content: this.state.content, user_id: user.id, user_username: user.username, user_image: user.image}]})
+      tasks: [...this.state.tasks, {content: this.state.content, user_id: user.id, user_username: user.username, user_image: user.image}]})
     this.setState({content: ''});
   }
 
@@ -54,17 +36,11 @@ class NewProject extends Component {
 
   handleSubmit(event){
     event.preventDefault();
-    const { history } = this.props;
-    if (this.state.project_id){
-      this.props.updateProject(this.state).then(()=> history.push("/projects"))
-    }
-    else {
-      this.props.createProject(this.state).then(() => history.push("/projects"))
-    }
+    this.props.handleSubmit(this.state);
   }
 
   handleChange(event){this.setState({...this.state, [event.target.name]: event.target.value})}
-  handleCancelChange(){this.props.history.push('/projects')}
+  handleCancelChange(){this.props.handleCancel()}
   onChangeStart(date){this.setState({start_date: date, end_date: date})}
   onChangeEnd(date){this.setState({end_date: date})}
   onChangeUser(e, {value}){this.setState({user_id: value})}
@@ -78,10 +54,7 @@ class NewProject extends Component {
             <Segment>
               <Header as="h3" color="blue" textAlign="center">Project</Header> <hr />
               <Header as="h4">Owner</Header>
-              { this.state.owner.image ? 
-                <Label as='a' image><img src={this.state.owner.image} alt='img'/>{this.state.owner.username}</Label> :
-                <Label as='a' image><img src={this.props.userInfo.image} alt='img'/>{this.props.userInfo.username}</Label>
-              }
+              <Label as='a' image><img src={this.state.owner.image} alt='img'/>{this.state.owner.username}</Label>
               <br/><br/>
               <Form onSubmit={this.handleSubmit}>
                 <Form.Field>
@@ -94,10 +67,10 @@ class NewProject extends Component {
                 </Form.Field>
                 <Form.Group inline>
                   <label>Start Date</label>
-                  <DatePicker onChange={this.onChangeStart} selected={this.state.start_date} />
+                  <DatePicker minDate={new Date()} onChange={this.onChangeStart} selected={this.state.start_date} />
                   <label></label>
                   <label>End Date</label>
-                  <DatePicker onChange={this.onChangeEnd} selected={this.state.end_date} />
+                  <DatePicker minDate={new Date()} onChange={this.onChangeEnd} selected={this.state.end_date} />
                 </Form.Group>
                 <Form.Field required>
                   <label>Add Tasks</label>
@@ -108,7 +81,7 @@ class NewProject extends Component {
                   <Label onClick={this.handleAddTask}><Icon name="plus"/>Add</Label>
                 </Form.Group>
                 <Form.Group inline>
-                  <Form.Button color='blue' type='submit'>Submit</Form.Button>{this.props.match.params.projectID && <Button type='button' onClick={this.handleCancelChange}>Cancel</Button>}
+                  <Form.Button color='blue' type='submit'>Submit</Form.Button><Button type='button' onClick={this.handleCancelChange}>Cancel</Button>
                 </Form.Group>
               </Form>
             </Segment>
@@ -170,11 +143,4 @@ const mapStateToProps = state => {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    createProject: (project) => dispatch(createNewProject(project)),
-    updateProject: (project) => dispatch(updateProject(project))
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(NewProject);
+export default connect(mapStateToProps)(ProjectForm);

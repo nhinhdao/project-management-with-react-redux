@@ -40,7 +40,6 @@ export function createNewProject(project) {
       if (resp.id) {
         // Update redux sore with return data
         dispatch({type: 'ADD_PROJECT_TO_STORE', resp});
-        history.push(`/projects/${resp.id}`)
       } else {
         dispatch({ type: "ADD_PROJECT_ERROR", errors: resp.errors });
       }
@@ -68,7 +67,6 @@ export function updateProject(project) {
       if (resp.id) {
         // Update redux sore with return data
         dispatch({type: 'ADD_PROJECT_TO_STORE', resp});
-        // history.push(`/projects/${resp.id}`)
       } else {
         dispatch({ type: "ADD_PROJECT_ERROR", errors: resp.errors });
       }
@@ -76,13 +74,29 @@ export function updateProject(project) {
   }
 }
 
+export const deleteProject = (projectID) => {
+  const url = `http://localhost:3001/api/v1/projects/${projectID}`
+  return dispatch => {
+    dispatch({type: "LOADING_API"});
+    return fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({id: projectID})
+    }).then(resp => resp.json())
+      .then(resp => {
+        dispatch({type: "DELETE_PROJECT", projectID: resp.id});
+      });
+  }
+}
+
 export function updateUserAccount(user) {
   const id = localStorage.getItem('userID')
   const url = `http://localhost:3001/api/v1/users/${id}`;
   return dispatch => {
-    dispatch({
-      type: "LOADING_API"
-    });
+    dispatch({ type: "LOADING_API" });
     return fetch(url, {
         method: 'PATCH',
         headers: {
