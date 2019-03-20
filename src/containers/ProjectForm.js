@@ -24,8 +24,7 @@ class ProjectForm extends Component {
 
   handleAddTask(){
     const user = this.props.allUsers.find(user => user.id === this.state.user_id);
-    this.setState({...this.state, owner: {...this.state.owner, id: this.props.userInfo.id},
-      tasks: [...this.state.tasks, {content: this.state.content, user_id: user.id, user_username: user.username, user_image: user.image}]})
+    this.setState({...this.state, tasks: [...this.state.tasks, {content: this.state.content, user_id: user.id, user_username: user.username, user_image: user.image}]})
   }
 
   handleDeleteTask(id){
@@ -77,7 +76,7 @@ class ProjectForm extends Component {
                 </Form.Field>
                 <Form.Group inline>
                   <Form.Select label='Assign User' options={users} placeholder='User' onChange={this.onChangeUser} required/>
-                  <Label onClick={this.handleAddTask}><Icon name="plus"/>Add</Label>
+                  <Label onClick={this.handleAddTask} color='red' tag><Icon name="plus"/>Add</Label>
                 </Form.Group>
                 <Form.Group inline>
                   <Form.Button color='blue' type='submit'>Submit</Form.Button><Button type='button' onClick={this.handleCancelChange}>Cancel</Button>
@@ -134,7 +133,6 @@ class ProjectForm extends Component {
 
 const mapStateToProps = state => {
   return {
-    userInfo: state.current_user.user,
     allUsers: state.current_user.users
   }
 }

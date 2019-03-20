@@ -22,7 +22,7 @@ export function getAllProjects(id) {
 
 export function createNewProject(project) {
   let newProject = {
-    owner_id: parseInt(localStorage.getItem("userID")), title: project.title, description: project.description,
+    owner_id: project.owner.id, title: project.title, description: project.description,
     start_date: project.start_date, end_date: project.end_date, 
     tasks: project.tasks.map(task => task = {content: task.content, user_id: task.user_id})
   }

@@ -8,10 +8,22 @@ class AllProjects extends Component {
   state = { projects: []}
 
   componentDidMount(){
+    this.getProjects();
+  }
+
+  UNSAFE_componentWillReceiveProps({ location = {} }) {
+    if (location.pathname === '/projects' && location.pathname !== this.props.location.pathname) {
+      this.getProjects();
+    }
+  }
+
+  getProjects() {
     const id = localStorage.getItem('userID')
     fetch(`http://localhost:3001/api/v1/allprojects/${id}`)
-        .then(response => response.json())
-        .then(data => this.setState({projects: data}));
+      .then(response => response.json())
+      .then(data => this.setState({
+        projects: data
+      }));
   }
 
   render(){

@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import {updateProject} from '../actions/APIsearch';
 import "react-datepicker/dist/react-datepicker.css";
+import { Header, Divider, Icon} from 'semantic-ui-react';
 import {connect} from 'react-redux';
 import ProjectForm from '../containers/ProjectForm';
 
 class EditProject extends Component {
   constructor (props) {
     super(props);
-    const project = props.projects.find(project => project.id === parseInt(this.props.match.params.projectID));
+    const {project} = props;
     const tasks = project.tasks.map(task => task = {content: task.content, user_id: task.user.id, user_username: task.user.username, user_image: task.user.image});
     const start_date = project.start_date + ' ';
     const end_date = project.end_date + ' ';
@@ -29,7 +30,10 @@ class EditProject extends Component {
     
   render() {
     return (
-      <ProjectForm project={this.state} handleSubmit={this.handleSubmit} handleCancel={this.handleCancel} />
+      <React.Fragment>
+        <Divider horizontal><Header as='h4'><Icon name='edit' />Edit Project</Header></Divider>
+        <ProjectForm project={this.state} handleSubmit={this.handleSubmit} handleCancel={this.handleCancel} />
+      </React.Fragment>
     )
   }
 }
