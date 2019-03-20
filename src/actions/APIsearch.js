@@ -22,8 +22,9 @@ export function getAllProjects(id) {
 
 export function createNewProject(project) {
   let newProject = {
-    owner_id: project.owner.id, title: project.title, description: project.description,
-    start_date: project.start_date, end_date: project.end_date, tasks: project.tasks
+    owner_id: parseInt(localStorage.getItem("userID")), title: project.title, description: project.description,
+    start_date: project.start_date, end_date: project.end_date, 
+    tasks: project.tasks.map(task => task = {content: task.content, user_id: task.user_id})
   }
   const url = 'http://localhost:3001/api/v1/projects'
   return dispatch => {
@@ -50,7 +51,8 @@ export function createNewProject(project) {
 export function updateProject(project) {
   let editProject = {
     id: project.project_id, title: project.title, description: project.description,
-    start_date: project.start_date, end_date: project.end_date, tasks: project.tasks
+    start_date: project.start_date, end_date: project.end_date, 
+    tasks: project.tasks.map(task => task = {content: task.content, user_id: task.user_id})
   }
   const url = `http://localhost:3001/api/v1/projects/${project.project_id}`
   return dispatch => {
@@ -66,7 +68,7 @@ export function updateProject(project) {
     .then(resp => {
       if (resp.id) {
         // Update redux sore with return data
-        dispatch({type: 'ADD_PROJECT_TO_STORE', resp});
+        dispatch({type: 'UPDATE_PROJECT', resp});
       } else {
         dispatch({ type: "ADD_PROJECT_ERROR", errors: resp.errors });
       }
@@ -88,6 +90,7 @@ export const deleteProject = (projectID) => {
     }).then(resp => resp.json())
       .then(resp => {
         dispatch({type: "DELETE_PROJECT", projectID: resp.id});
+        // history.push("/projects");
       });
   }
 }
@@ -98,14 +101,18 @@ export function updateUserAccount(user) {
   return dispatch => {
     dispatch({ type: "LOADING_API" });
     return fetch(url, {
-        method: 'PATCH',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(user)
-      }).then(resp => resp.json())
-      .then(resp => dispatch({type: "UPDATE_USER_ACCOUNT", resp}));
+      method: 'PATCH',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(user)
+    }).then(resp => resp.json())
+    .then(resp => {
+      localStorage.setItem("userImage", resp.image);
+      localStorage.setItem("userUsername", resp.username);
+      dispatch({type: "UPDATE_USER_ACCOUNT", resp});
+    })
   }
 }
 
@@ -124,7 +131,9 @@ export function signIn(user) {
       .then(resp => {
       if (resp.id) {
         // set userId to localstorage for accessing its projects later
-        localStorage.setItem("userID", parseInt(resp.id))
+        localStorage.setItem("userID", parseInt(resp.id));
+        localStorage.setItem("userImage", resp.image);
+        localStorage.setItem("userUsername", resp.username);
         // Update redux sore with return data
         dispatch({type: 'SIGN_IN', resp});
         history.push("/")
@@ -165,7 +174,9 @@ export function register(user) {
     .then(resp => {
       if (resp) {
         // set userId to localstorage for accessing its projects later
-        localStorage.setItem("userID", resp.id)
+        localStorage.setItem("userID", resp.id);
+        localStorage.setItem("userImage", resp.image);
+        localStorage.setItem("userUsername", resp.username);
         // Update redux sore with return data
         dispatch({type: 'REGISTER_NEW_USER', resp});
         history.push("/");

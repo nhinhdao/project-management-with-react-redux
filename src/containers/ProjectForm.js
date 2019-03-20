@@ -26,7 +26,6 @@ class ProjectForm extends Component {
     const user = this.props.allUsers.find(user => user.id === this.state.user_id);
     this.setState({...this.state, owner: {...this.state.owner, id: this.props.userInfo.id},
       tasks: [...this.state.tasks, {content: this.state.content, user_id: user.id, user_username: user.username, user_image: user.image}]})
-    this.setState({content: ''});
   }
 
   handleDeleteTask(id){
@@ -91,10 +90,7 @@ class ProjectForm extends Component {
               <Segment secondary>
                 <Header as="h3" color="blue" textAlign="center">Review</Header> <hr />
                 <Header as="h4">Owner</Header>
-                { this.state.owner.image ? 
-                <Label as='a' image><img src={this.state.owner.image} alt='img'/>{this.state.owner.username}</Label> :
-                <Label as='a' image><img src={this.props.userInfo.image} alt='img'/>{this.props.userInfo.username}</Label>
-                }
+                <Label as='a' image><img src={this.state.owner.image} alt='img'/>{this.state.owner.username}</Label>
                 <Header as="h4">Title</Header>
                 <p>{this.state.title}</p>
                 <Header as="h4">Description</Header>

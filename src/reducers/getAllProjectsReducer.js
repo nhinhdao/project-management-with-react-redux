@@ -21,7 +21,23 @@ export default function getAllProjectsReducer(state = { projects: [], project: {
         tasks: data.tasks
       }
       return { ...state, project: project, loading: false };
+    case 'UPDATE_PROJECT':
+      data = action.resp;
+      let updatedProject = {
+        id: data.id,
+        name: data.name,
+        description: data.description,
+        start_date: data.start_date,
+        end_date: data.end_date,
+        owner: data.owner,
+        tasks: data.tasks
+      }
+      return {...state, projects: state.projects.map(project => {
+        if (project.id === data.id){return updatedProject}
+        return project;
+      })};
     case 'DELETE_PROJECT':
+    debugger
       return { ...state, projects: [...state.projects.filter(project => project.id !== action.projectID)]};
     default:
       return state;

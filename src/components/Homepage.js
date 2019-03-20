@@ -54,7 +54,7 @@ class Homepage extends Component {
             </Sidebar>
             <Route exact path="/" component={MyPage} />
             <Route path="/users" component={UsersPage} />
-            <Route path="/newproject" render={routerProps => <NewProject owner={this.props.userInfo} {...routerProps} />} />
+            <Route path="/newproject" component={NewProject} />
             <Route path="/projects" component={AllProjects} />
             <Route path="/editproject/:projectID" render={routerProps => <EditProject projects={this.props.projects} {...routerProps} />} />
           </React.Fragment>

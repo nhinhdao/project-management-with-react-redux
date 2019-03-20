@@ -10,7 +10,7 @@ class ProjectPage extends Component {
   constructor(props){
     super(props);
     const project = props.projects.find(project => project.id === parseInt(this.props.match.params.projectID));
-    this.state = {project: project, date: new Date(), open: true, confirmDelete: false};
+    this.state = {project: project, date: new Date(), open: true};
     this.handleChange = this.handleChange.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.close = this.close.bind(this)
@@ -20,8 +20,7 @@ class ProjectPage extends Component {
 
   handleChange(date){this.setState({ date: date })};
 
-  handleDelete(){debugger
-    this.setState({confirmDelete: true});
+  handleDelete(){
     this.props.deleteProject(this.state.project.id).then(() => this.props.history.push("/projects"))
   }
 
