@@ -1,5 +1,5 @@
 export default function getUserInfoReducer(state = defaultState, action) {
-  let user, resp;
+  let newUser, user, resp;
   switch (action.type) {
     case "LOADING_API":
       return {...state, loading: true}
@@ -16,8 +16,11 @@ export default function getUserInfoReducer(state = defaultState, action) {
       return { ...state, users: resp, error: false, loading: false }
     case "UPDATE_USER_ACCOUNT":
       resp = action.resp;
-      user = {id: resp.id, username: resp.username, email: resp.email, image: resp.image, project_count: resp.projects.length, task_count: resp.tasks.length}
-      return { ...state, user: user, error: false, loading: false }
+      newUser = {id: resp.id, username: resp.username, email: resp.email, image: resp.image, project_count: resp.projects.length, task_count: resp.tasks.length}
+      return {...state, user: newUser, error: false, loading: false, users: state.users.map(user => {
+        if (user.id === resp.id){return newUser}
+        return user;
+      })};
     case "SIGN_OUT":
       return defaultState
     case "SIGN_IN_ERROR":

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link, Redirect} from 'react-router-dom';
-import { getAllUsers, getAllProjects, signOut } from '../actions/APIsearch';
+import { BrowserRouter as Router, Route, Link, Redirect, Switch} from 'react-router-dom';
+import { getAllUsers, signOut } from '../actions/APIsearch';
 import { Sidebar, Menu, Icon, Image } from 'semantic-ui-react';
 import projectmanagementPane from '../images/projectmanagementPane.png';
 import NewProject from './NewProject';
-import EditProject from './EditProject';
 import UsersPage from './UsersPage';
 import AllProjects from './AllProjects';
 import MyPage from './MyPage';
@@ -21,8 +20,10 @@ const style = {
 class Homepage extends Component {
   constructor(){
     super();
+    this.state = { projects: []}
     this.handleLogout=this.handleLogout.bind(this)
   }
+
   handleLogout(event){
     event.preventDefault();
     this.props.signOut();
@@ -31,8 +32,6 @@ class Homepage extends Component {
   };
 
   componentDidMount() {
-    let userID = localStorage.getItem("userID")
-    this.props.getAllProjects(userID)
     this.props.getAllUsers();
   }
 
@@ -52,11 +51,12 @@ class Homepage extends Component {
               <Link to="/users"><Menu.Item name="users"><Icon name="users" />Users</Menu.Item></Link>
               <Menu.Item name="logout" onClick={this.handleLogout}><Icon name="power" />Logout</Menu.Item>
             </Sidebar>
-            <Route exact path="/" component={MyPage} />
-            <Route path="/users" component={UsersPage} />
-            <Route path="/newproject" component={NewProject} />
-            <Route path="/projects" component={AllProjects} />
-            <Route path="/editproject/:projectID" render={routerProps => <EditProject projects={this.props.projects} {...routerProps} />} />
+            <Switch>
+              <Route exact path="/" component={MyPage} />
+              <Route path="/users" component={UsersPage} />
+              <Route path="/newproject" component={NewProject} />
+              <Route path="/projects" component={AllProjects} />
+            </Switch>
           </React.Fragment>
         </Router>
       </div>
@@ -64,19 +64,11 @@ class Homepage extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    userInfo: state.current_user.user,
-    projects: state.allProjects.projects
-  }
-}
-
 const mapDispatchToProps = dispatch => {
   return {
     getAllUsers: () => dispatch(getAllUsers()),
-    getAllProjects: id => dispatch(getAllProjects(id)),
     signOut: () => dispatch(signOut())
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Homepage);
+export default connect(null, mapDispatchToProps)(Homepage);

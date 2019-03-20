@@ -12,22 +12,29 @@ class MyPage extends Component {
       updateAccount: false,
       errors: false
     };
-    this.handleClick=this.handleClick.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleClick=this.handleClick.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleUpdateInformation = this.handleUpdateInformation.bind(this)
   }
 
   componentDidMount(){
     const id = localStorage.getItem("userID")
     fetch(`http://localhost:3001/api/v1/users/${id}`)
-    .then(resp => resp.json()).then(resp => this.setState({
-      ...this.state,
-      user: { ...this.state.user, username: resp.username, email: resp.email, image: resp.image }
-    }))
+    .then(resp => resp.json()).then(resp => {
+      this.setState({...this.state,
+        user: { ...this.state.user, username: resp.username, email: resp.email, image: resp.image }
+      });
+      this.baseState = this.state
+    })
+  }
+
+  handleCancel(){
+    this.setState(this.baseState)
   }
 
   handleClick(){
-    this.setState({updateAccount: !this.state.updateAccount, errors: false})
+    this.setState({updateAccount: true, errors: false})
   }
 
   handleUpdateInformation(event){
@@ -39,7 +46,7 @@ class MyPage extends Component {
   handleSubmit(event){
     event.preventDefault();
     if (this.state.user.password && this.state.user.password === this.state.user.password_confirmation) {
-      this.props.updateUserAccount(this.state.user);
+      this.props.updateUserAccount(this.state.user)
       this.setState({...this.state, updateAccount: false, errors: false})
     }
     else {this.setState({errors : true})}
@@ -74,7 +81,7 @@ class MyPage extends Component {
               </Form.Group>
               {this.state.errors && <Header as='h5' color='red'>Passwords do not match/present. Please try again!</Header>}
               <Form.Input label='Link to your profile picture' name='image' placeholder='Picture of size 200x200 if possible' onChange={this.handleUpdateInformation}/>
-              <Button type='submit' color='blue'>Update</Button><Button type='button' onClick={this.handleClick}>Cancel</Button>
+              <Button type='submit' color='blue'>Update</Button><Button type='button' onClick={this.handleCancel}>Cancel</Button>
             </Form>
            }
         </Segment>

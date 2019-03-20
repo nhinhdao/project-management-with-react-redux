@@ -13,7 +13,7 @@ class WelcomePage extends Component {
     this.state = {register: false, error: false};
     this.handleSignIn = this.handleSignIn.bind(this);
     this.handleRegister = this.handleRegister.bind(this);
-    this.toggleRegister = this.toggleRegister.bind(this)
+    this.toggleRegister = this.toggleRegister.bind(this);
   }
   
 
