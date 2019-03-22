@@ -7,6 +7,7 @@
     "dotenv": "^6.2.0",
     "history": "^4.7.2",
     "interact.js": "^1.2.8",
+    "lodash.times": "^4.3.2",
     "moment": "^2.24.0",
     "new-react-calendar-timeline": "^2.2.0",
     "randomcolor": "^0.5.4",
