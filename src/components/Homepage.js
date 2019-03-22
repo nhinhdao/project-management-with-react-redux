@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link, Redirect, Switch} from 'react-router-dom';
-import { getAllUsers, signOut } from '../actions/APIsearch';
+import { getAllUsers, signOut, getProject } from '../actions/APIsearch';
 import { Sidebar, Menu, Icon, Image } from 'semantic-ui-react';
 import projectmanagementPane from '../images/projectmanagementPane.png';
 import NewProject from './NewProject';
@@ -8,6 +8,7 @@ import UsersPage from './UsersPage';
 import AllProjects from './AllProjects';
 import MyPage from './MyPage';
 import {connect} from 'react-redux';
+import EditProject from './EditProject';
 
 /* Add style for main compartment */
 const style = {
@@ -30,6 +31,10 @@ class Homepage extends Component {
     localStorage.clear();
     this.props.history.push('/login');
   };
+  
+  getSingleProject(id){
+    this.props.getProject(id)
+  }
 
   componentDidMount() {
     this.props.getAllUsers();
@@ -52,10 +57,11 @@ class Homepage extends Component {
               <Menu.Item name="logout" onClick={this.handleLogout}><Icon name="power" />Logout</Menu.Item>
             </Sidebar>
             <Switch>
-              <Route exact path="/" component={MyPage} />
+              <Route exact path="/" render={routerProps => <MyPage user={this.props.user} {...routerProps} />} />
               <Route path="/users" component={UsersPage} />
               <Route path="/newproject" component={NewProject} />
               <Route path="/projects" component={AllProjects} />
+              <Route path="/editprojects/:projectID" component={EditProject} />
             </Switch>
           </React.Fragment>
         </Router>
@@ -64,11 +70,18 @@ class Homepage extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapStateToProps = state => {
   return {
-    getAllUsers: () => dispatch(getAllUsers()),
-    signOut: () => dispatch(signOut())
+    user: state.current_user.user
   }
 }
 
-export default connect(null, mapDispatchToProps)(Homepage);
+const mapDispatchToProps = dispatch => {
+  return {
+    getAllUsers: () => dispatch(getAllUsers()),
+    signOut: () => dispatch(signOut()),
+    getProject: id => dispatch(getProject(id))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Homepage);

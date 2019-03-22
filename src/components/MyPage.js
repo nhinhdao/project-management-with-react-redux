@@ -8,25 +8,21 @@ class MyPage extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      user: {username: '', email: '', password: '', password_confirmation: '', image: ''},
+      user: {
+        username: props.user.username,
+        email: props.user.email,
+        password: '',
+        password_confirmation: '',
+        image: props.user.image
+      },
       updateAccount: false,
       errors: false
     };
+    this.baseState = this.state;
     this.handleClick=this.handleClick.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleUpdateInformation = this.handleUpdateInformation.bind(this)
-  }
-
-  componentDidMount(){
-    const id = localStorage.getItem("userID")
-    fetch(`http://localhost:3001/api/v1/users/${id}`)
-    .then(resp => resp.json()).then(resp => {
-      this.setState({...this.state,
-        user: { ...this.state.user, username: resp.username, email: resp.email, image: resp.image }
-      });
-      this.baseState = this.state
-    })
   }
 
   handleCancel(){

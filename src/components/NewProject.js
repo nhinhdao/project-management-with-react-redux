@@ -9,9 +9,14 @@ class NewProject extends Component {
   constructor (props) {
     super(props);
     this.state = { 
-      project_id: null, title: '', description: '', 
-      start_date: new Date(), end_date: new Date(), 
-      content: '', user_id: 1,  tasks: [] ,
+      project_id: null, 
+      title: '', 
+      description: '', 
+      start_date: new Date(), 
+      end_date: new Date(), 
+      content: '', 
+      user_id: 1,  
+      tasks: [] ,
       owner: {
         id: parseInt(localStorage.getItem("userID")),
         username: localStorage.getItem("userUsername"),

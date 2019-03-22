@@ -3,32 +3,42 @@ import { Header, Image, Modal, Form, Label, Table, Button} from 'semantic-ui-rea
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import {Link, Route} from 'react-router-dom';
-import {deleteProject} from '../actions/APIsearch';
+import {deleteProject, getProject} from '../actions/APIsearch';
 import {connect} from 'react-redux';
 import EditProject from './EditProject';
 
 class ProjectPage extends Component {
-  constructor(props){
-    super(props);
-    const project = props.projects.find(project => project.id === parseInt(this.props.match.params.projectID));
-    this.state = {project: project, date: new Date(), open: true};
+  constructor(){
+    super();
+    this.state = { date: new Date(), open: true, isLoading: true};
     this.handleChange = this.handleChange.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.close = this.close.bind(this)
+  }
+
+  componentDidMount() {
+    const id = this.props.match.params.projectID;
+    this.props.getProject(id).then(() => this.setState({isLoading: false}))
   }
 
   close(){this.setState({ open: false })};
 
   handleChange(date){this.setState({ date: date })};
 
-  handleDelete(){
-    this.props.deleteProject(this.state.project.id).then(() => this.props.history.push("/projects"))
+  handleDelete(id){
+    this.props.deleteProject(id).then(() => this.props.history.push("/projects"))
   }
 
   render(){
-    const {project} = this.state
+    const {project} = this.props
     const start_date = new Date(project.start_date + " ");
     const end_date = new Date(project.end_date + " ");
+    
+    // return null while waiting for data loading so the component doesn't break
+    if (this.state.isLoading) { 
+      return null ; 
+    }
+
     return(
       <React.Fragment>
         <Modal open={this.state.open} dimmer='blurring'>
@@ -67,9 +77,11 @@ class ProjectPage extends Component {
             </Modal.Description>
           </Modal.Content>
           <Modal.Actions>
-            {project.owner.id === parseInt(localStorage.getItem("userID")) ? 
-            <React.Fragment><Link to={`/projects/${project.id}/edit`} onClick={this.close}><Button positive>Edit</Button></Link> 
-            <Button negative  onClick={this.handleDelete}>Delete</Button></React.Fragment> : null}
+            { (project.owner.id === parseInt(localStorage.getItem("userID"))) && 
+            <React.Fragment>
+              <Link to={`/editprojects/${project.id}`} onClick={this.close}><Button positive>Edit</Button></Link> 
+              <Button negative  onClick={() => this.handleDelete(project.id)}>Delete</Button>
+            </React.Fragment>}
             <Link to="/projects"><Button>Close</Button></Link>
           </Modal.Actions>
         </Modal>
@@ -79,10 +91,17 @@ class ProjectPage extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch =>{
+const mapStateToProps = state => {
   return {
-    deleteProject: id => dispatch(deleteProject(id))
+    project: state.allProjects.project
   }
 }
 
-export default connect(null, mapDispatchToProps)(ProjectPage);
+const mapDispatchToProps = dispatch =>{
+  return {
+    deleteProject: id => dispatch(deleteProject(id)),
+    getProject: id => dispatch(getProject(id))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectPage);

@@ -3,6 +3,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import {Route} from 'react-router-dom';
 import ProjectPage from './ProjectPage';
 import ProjectTimeline from './ProjectTimeline';
+import { getAllProjects } from '../actions/APIsearch';
+import {connect} from 'react-redux';
 
 class AllProjects extends Component {
   state = { projects: []}
@@ -18,22 +20,30 @@ class AllProjects extends Component {
   }
 
   getProjects() {
-    const id = localStorage.getItem('userID')
-    fetch(`http://localhost:3001/api/v1/allprojects/${id}`)
-      .then(response => response.json())
-      .then(data => this.setState({
-        projects: data
-      }));
+    const id = localStorage.getItem("userID")
+    this.props.getAllProjects(id)
   }
 
   render(){
     return(
       <React.Fragment>
-        <ProjectTimeline projects={this.state.projects} />
-        <Route path="/projects/:projectID" render={routerProps => <ProjectPage projects={this.state.projects} {...routerProps} />}/>
+        <ProjectTimeline projects={this.props.projects} />
+        <Route path="/projects/:projectID" render={routerProps => <ProjectPage projects={this.props.projects} {...routerProps} />}/>
       </React.Fragment>
     )
   }
 }
 
-export default AllProjects;
+const mapStateToProps = state => {
+  return {
+    projects: state.allProjects.projects
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getAllProjects: (id) => dispatch(getAllProjects(id))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AllProjects);
