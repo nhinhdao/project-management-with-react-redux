@@ -7,11 +7,12 @@ class UsersPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      page: 0,
+      page: 0
     };
     this.incrementPage = this.incrementPage.bind(this);
     this.decrementPage = this.decrementPage.bind(this);
     this.setPage = this.setPage.bind(this);
+    this.sortUser = this.sortUser.bind(this);
   }
 
   setPage(page) {

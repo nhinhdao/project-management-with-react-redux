@@ -40,16 +40,3 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllProjects);
-
-// UNSAFE_componentWillReceiveProps({ location = {} }) {
-//   if (location.pathname === '/projects' && location.pathname !== this.props.location.pathname) {
-//     this.getProjects();
-//   }
-// }
-
-// componentDidUpdate(prevProps) {
-//   debugger
-//   if (prevProps.location.pathname === '/projects' && prevProps.location.pathname !== this.props.location.pathname) {
-//     this.getProjects();
-//   }
-// }
