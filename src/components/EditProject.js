@@ -13,12 +13,6 @@ class EditProject extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  // componentDidMount(){
-  //   console.log('mount editpage')
-  //   const id = this.props.match.params.projectID;
-  //   this.props.getProject(id)
-  // }
-
   handleSubmit(project){
     const { history } = this.props;
     this.props.updateProject(project).then(()=> history.push("/projects"))

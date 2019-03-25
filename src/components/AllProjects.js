@@ -7,16 +7,9 @@ import { getAllProjects } from '../actions/APIsearch';
 import {connect} from 'react-redux';
 
 class AllProjects extends Component {
-  state = { projects: []}
 
   componentDidMount(){
     this.getProjects();
-  }
-
-  UNSAFE_componentWillReceiveProps({ location = {} }) {
-    if (location.pathname === '/projects' && location.pathname !== this.props.location.pathname) {
-      this.getProjects();
-    }
   }
 
   getProjects() {
@@ -47,3 +40,16 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllProjects);
+
+// UNSAFE_componentWillReceiveProps({ location = {} }) {
+//   if (location.pathname === '/projects' && location.pathname !== this.props.location.pathname) {
+//     this.getProjects();
+//   }
+// }
+
+// componentDidUpdate(prevProps) {
+//   debugger
+//   if (prevProps.location.pathname === '/projects' && prevProps.location.pathname !== this.props.location.pathname) {
+//     this.getProjects();
+//   }
+// }
