@@ -25,6 +25,8 @@ export default function getUserInfoReducer(state = defaultState, action) {
       return defaultState
     case "SIGN_IN_ERROR":
       return {...state, error: true}
+    case 'RESET_ERROR':
+      return {...state, error: false}
     default:
       return state;
   }
