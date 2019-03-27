@@ -45,7 +45,7 @@ class RegisterForm extends Component {
             </Button>
           </Form>
         </Segment>
-        {this.state.error && <Header as='h4' color='red'>{this.state.error}</Header>}
+        {this.state.error && <Header as='h3' color='red'>{this.state.error}</Header>}
       </React.Fragment>
     )
   }
