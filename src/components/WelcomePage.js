@@ -10,7 +10,7 @@ import {Redirect} from 'react-router-dom';
 class WelcomePage extends Component {
   constructor(){
     super();
-    this.state = {register: false, error: false};
+    this.state = {register: false, error: true};
     this.handleSignIn = this.handleSignIn.bind(this);
     this.handleRegister = this.handleRegister.bind(this);
     this.toggleRegister = this.toggleRegister.bind(this);
@@ -26,7 +26,7 @@ class WelcomePage extends Component {
   }
 
   toggleRegister(){
-    this.setState({register: !this.state.register})
+    this.setState({register: !this.state.register, error: false})
   }
 
   render() {
@@ -51,7 +51,7 @@ class WelcomePage extends Component {
               {this.state.register ? <RegisterForm handleRegister={this.handleRegister}/> : <SignInForm handleSignIn={this.handleSignIn}/>}
             </Grid.Column>
           </Grid.Row>
-          {this.props.error &&
+          {(this.props.error && this.state.error) &&
           <Grid.Row>
             <Grid.Column width={4}>
               <Header as='h3' color='red' textAlign='center'>Incorrect Username/Password</Header>
