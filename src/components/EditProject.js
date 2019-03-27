@@ -15,7 +15,7 @@ class EditProject extends Component {
 
   handleSubmit(project){
     const { history } = this.props;
-    this.props.updateProject(project).then(()=> history.push("/projects"))
+    this.props.updateProject(project).then(()=> history.push(`/projects/${project.project_id}`))
   }
   
   handleCancel = () => this.props.history.push("/projects")

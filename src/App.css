@@ -13,3 +13,7 @@ div.react-calendar-timeline .rct-items .rct-item{
 div.react-calendar-timeline .rct-outer .rct-items .rct-item .rct-item-overflow .rct-item-content {
   padding: 0;
 }
+
+.error{
+  border: 1px solid red;
+}

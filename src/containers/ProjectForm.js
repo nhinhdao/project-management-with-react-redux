@@ -16,6 +16,8 @@ class ProjectForm extends Component {
     this.onChangeEndDate = this.onChangeEndDate.bind(this);
     this.onChangeStartDate = this.onChangeStartDate.bind(this);
     this.onChangeUser = this.onChangeUser.bind(this);
+    this.validate = this.validate.bind(this);
+    this.canBeSubmitted = this.canBeSubmitted.bind(this);
   }
 
   handleAddTask(){
@@ -91,12 +93,32 @@ class ProjectForm extends Component {
     this.props.handleCancel()
   }
 
+  validate(title, description, tasks) {
+    // true means invalid, so our conditions got reversed
+    return {
+      title: title.length === 0,
+      description: description.length === 0,
+      tasks: tasks.length === 0
+    };
+  }
+
+  canBeSubmitted() {
+    const errors = this.validate(this.state.project.title, this.state.project.description, this.state.project.tasks);
+    const isDisabled = Object.keys(errors).some(x => errors[x]);
+    return !isDisabled;
+  }
+
   handleSubmit(event) {
     event.preventDefault();
+    if (!this.canBeSubmitted()) {
+      return;
+    }
     this.props.handleSubmit(this.state.project);
   }
   
   render() {
+    const errors = this.validate(this.state.project.title, this.state.project.description, this.state.project.tasks);
+    const isDisabled = Object.keys(errors).some(x => errors[x]);
     const users = this.props.allUsers.map(user => user = {key: user.id, text: user.username, value: user.id, image: {avatar: true, src: user.image}});
     const {project} = this.state
     return (
@@ -111,11 +133,11 @@ class ProjectForm extends Component {
               <Form onSubmit={this.handleSubmit}>
                 <Form.Field>
                   <label>Project Title</label>
-                  <input name='title' onChange={this.handleChange} value={project.title} placeholder='Title' />
+                  <input className={errors.email ? "error" : ""} name='title' onChange={this.handleChange} value={project.title} placeholder='Title' />
                 </Form.Field>
                 <Form.Field>
                   <label>Description</label>
-                  <input name='description' onChange={this.handleChange} value={project.description} placeholder='Description' />
+                  <input className={errors.email ? "error" : ""} name='description' onChange={this.handleChange} value={project.description} placeholder='Description' />
                 </Form.Field>
                 <Form.Group inline>
                   <label>Start Date</label>
@@ -133,7 +155,7 @@ class ProjectForm extends Component {
                   <Label onClick={this.handleAddTask} color='red' tag><Icon name="plus"/>Add</Label>
                 </Form.Group>
                 <Form.Group inline>
-                  <Form.Button color='blue' type='submit'>Submit</Form.Button><Button type='button' onClick={this.handleCancelChange}>Cancel</Button>
+                  <Form.Button  disabled={isDisabled} color='blue' type='submit'>Submit</Form.Button><Button type='button' onClick={this.handleCancelChange}>Cancel</Button>
                 </Form.Group>
               </Form>
             </Segment>

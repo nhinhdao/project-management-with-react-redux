@@ -88,6 +88,7 @@ export function createNewProject(project) {
       .then(resp => {
         if (resp.id) {
           // Update redux sore with return data
+          localStorage.setItem('projectID', resp.id)
           dispatch({
             type: 'ADD_PROJECT_TO_STORE',
             resp

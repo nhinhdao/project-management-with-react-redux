@@ -29,7 +29,7 @@ class NewProject extends Component {
 
   handleSubmit(project){
     const { history } = this.props;
-    this.props.createProject(project).then(() => history.push("/projects"))
+    this.props.createProject(project).then(() => history.push(`/projects/${localStorage.getItem("projectID")}`))
   }
 
   handleCancel = () => this.props.history.push("/projects")
