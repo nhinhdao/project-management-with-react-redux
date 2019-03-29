@@ -2,7 +2,6 @@
   "name": "project-management-with-react-redux",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:3001/",
   "dependencies": {
     "dotenv": "^6.2.0",
     "history": "^4.7.2",
