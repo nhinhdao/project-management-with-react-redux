@@ -131,13 +131,13 @@ class ProjectForm extends Component {
               <Label as='a' image><img src={project.owner.image} alt='img'/>{project.owner.username}</Label>
               <br/><br/>
               <Form onSubmit={this.handleSubmit}>
-                <Form.Field>
+                <Form.Field required>
                   <label>Project Title</label>
-                  <input className={errors.email ? "error" : ""} name='title' onChange={this.handleChange} value={project.title} placeholder='Title' />
+                  <input className={errors.title ? "error" : ""} name='title' onChange={this.handleChange} value={project.title} placeholder='Title' />
                 </Form.Field>
-                <Form.Field>
+                <Form.Field required>
                   <label>Description</label>
-                  <input className={errors.email ? "error" : ""} name='description' onChange={this.handleChange} value={project.description} placeholder='Description' />
+                  <input className={errors.description ? "error" : ""} name='description' onChange={this.handleChange} value={project.description} placeholder='Description' />
                 </Form.Field>
                 <Form.Group inline>
                   <label>Start Date</label>

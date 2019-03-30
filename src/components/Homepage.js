@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link, Redirect, Switch} from 'react-router-dom';
-import { getAllUsers, signOut, getProject } from '../actions/APIsearch';
+import { getAllUsers, signOut, getProject, getCurrentUser } from '../actions/APIsearch';
 import { Sidebar, Menu, Icon, Image } from 'semantic-ui-react';
 import projectmanagementPane from '../images/projectmanagementPane.png';
 import NewProject from './NewProject';
@@ -21,7 +21,6 @@ const style = {
 class Homepage extends Component {
   constructor(){
     super();
-    this.state = { projects: []}
     this.handleLogout=this.handleLogout.bind(this)
   }
 
@@ -37,6 +36,8 @@ class Homepage extends Component {
   }
 
   componentDidMount() {
+    const id = localStorage.getItem("userID")
+    this.props.getCurrentUser(id);
     this.props.getAllUsers();
   }
 
@@ -57,7 +58,8 @@ class Homepage extends Component {
               <Menu.Item name="logout" onClick={this.handleLogout}><Icon name="power" />Logout</Menu.Item>
             </Sidebar>
             <Switch>
-              <Route exact path="/" render={routerProps => <MyPage user={this.props.user} {...routerProps} />} />
+            {  /* <Route exact path="/" render={routerProps => <MyPage user={this.props.user} {...routerProps} />} /> */}
+              <Route exact path="/" component={MyPage} />
               <Route path="/users" component={UsersPage} />
               <Route path="/newproject" component={NewProject} />
               <Route path="/projects" component={AllProjects} />
@@ -70,18 +72,13 @@ class Homepage extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    user: state.current_user.user
-  }
-}
-
 const mapDispatchToProps = dispatch => {
   return {
     getAllUsers: () => dispatch(getAllUsers()),
     signOut: () => dispatch(signOut()),
-    getProject: id => dispatch(getProject(id))
+    getProject: id => dispatch(getProject(id)),
+    getCurrentUser: id => dispatch(getCurrentUser(id))
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Homepage);
+export default connect(null, mapDispatchToProps)(Homepage);

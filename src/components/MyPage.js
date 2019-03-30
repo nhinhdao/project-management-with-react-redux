@@ -9,11 +9,11 @@ class MyPage extends Component {
     super(props);
     this.state = {
       user: {
-        username: props.user.username,
-        email: props.user.email,
+        username: '',
+        email: '',
         password: '',
         password_confirmation: '',
-        image: props.user.image
+        image: ''
       },
       updateAccount: false,
       errors: false
@@ -23,6 +23,18 @@ class MyPage extends Component {
     this.handleCancel = this.handleCancel.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleUpdateInformation = this.handleUpdateInformation.bind(this)
+  }
+
+  componentDidMount(){
+    const {user} = this.props;
+    this.setState({
+      ...this.state,
+      user: {
+        username: user.username,
+        email: user.email,
+        image: user.image
+      }
+    })
   }
 
   handleCancel(){
@@ -58,18 +70,18 @@ class MyPage extends Component {
           <hr/>
           <Label as='a' color='red' ribbon>Overview</Label>
           <span>Account Details</span>
-          <Image src={user.image}/>
+          <Image src={this.props.user.image}/>
           <Segment color='blue'>
-            <Header as='h4' color='blue'>{user.username}</Header>
-            <p><strong>{user.email}</strong></p>
+            <Header as='h4' color='blue'>{this.props.user.username}</Header>
+            <p><strong>{this.props.user.email}</strong></p>
           </Segment>
           <Button onClick={this.handleClick}>Update Account</Button>
           { this.state.updateAccount &&
             <Form onSubmit={this.handleSubmit}>
               <hr/>
               <Form.Group widths='equal'>
-                <Form.Input label='Username' name='username' value={user.username} placeholder={user.username} onChange={this.handleUpdateInformation} />
-                <Form.Input label='Email' name='email' value={user.email} placeholder={user.email} onChange={this.handleUpdateInformation} />
+                <Form.Input label='Username' name='username' value={user.username} placeholder={this.props.user.username} onChange={this.handleUpdateInformation} />
+                <Form.Input label='Email' name='email' value={user.email} placeholder={this.props.user.email} onChange={this.handleUpdateInformation} />
               </Form.Group>
               <Form.Group widths='equal'>
                 <Form.Input label='Password' type='password' name='password' placeholder='Password' value={user.password} onChange={this.handleUpdateInformation} required/>
@@ -87,10 +99,17 @@ class MyPage extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    user: state.current_user.user
+  }
+}
+
+
 const mapDispatchToProps = dispatch => {
   return {
     updateUserAccount: user => dispatch(updateUserAccount(user))
   }
 }
 
-export default connect(null, mapDispatchToProps)(MyPage);
+export default connect(mapStateToProps, mapDispatchToProps)(MyPage);

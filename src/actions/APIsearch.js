@@ -3,7 +3,6 @@ import history from '../components/history';
 const BASEURL = 'https://wetask-project-management.herokuapp.com/api/v1'
 
 export function getCurrentUser(id) {
-  // const url = `http://localhost:3001/api/v1/users/${id}`
   const url = `${BASEURL}/users/${id}`
   return dispatch => {
     dispatch({
@@ -11,15 +10,15 @@ export function getCurrentUser(id) {
     });
     return fetch(url)
       .then(response => response.json())
-      .then(data => dispatch({
-        type: 'GET_CURRENT_USER',
-        payload: data
-      }));
+      .then(resp => dispatch({
+          type: 'GET_CURRENT_USER',
+          resp
+        })
+      );
   }
 }
 
 export function getAllUsers() {
-  // const url = "http://localhost:3001/api/v1/users/"
   const url = `${BASEURL}/users`
   return dispatch => {
     dispatch({
@@ -35,7 +34,6 @@ export function getAllUsers() {
 }
 
 export function getAllProjects(id) {
-  // const url = `http://localhost:3001/api/v1/allprojects/${id}`
   const url = `${BASEURL}/allprojects/${id}`
   return dispatch => {
     dispatch({
@@ -51,7 +49,6 @@ export function getAllProjects(id) {
 }
 
 export function getProject(id) {
-  // const url = `http://localhost:3001/api/v1/projects/${id}`
   const url = `${BASEURL}/projects/${id}`
   return dispatch => {
     dispatch({
@@ -78,7 +75,6 @@ export function createNewProject(project) {
       user_id: task.user_id
     })
   }
-  // const url = 'http://localhost:3001/api/v1/projects'
   const url = `${BASEURL}/projects`
   return dispatch => {
     dispatch({
@@ -122,7 +118,6 @@ export function updateProject(project) {
       user_id: task.user_id
     })
   }
-  // const url = `http://localhost:3001/api/v1/projects/${project.project_id}`
   const url = `${BASEURL}/projects/${project.project_id}`
   return dispatch => {
     dispatch({
@@ -154,7 +149,6 @@ export function updateProject(project) {
 }
 
 export const deleteProject = (projectID) => {
-  // const url = `http://localhost:3001/api/v1/projects/${projectID}`
   const url = `${BASEURL}/projects/${projectID}`
   return dispatch => {
     dispatch({
@@ -182,7 +176,6 @@ export const deleteProject = (projectID) => {
 
 export function updateUserAccount(user) {
   const id = localStorage.getItem('userID')
-  // const url = `http://localhost:3001/api/v1/users/${id}`;
   const url = `${BASEURL}/users/${id}`
   return dispatch => {
     dispatch({
@@ -208,7 +201,6 @@ export function updateUserAccount(user) {
 }
 
 export function signIn(user) {
-  // const url = 'http://localhost:3001/api/v1/login'
   const url = `${BASEURL}/login`
   return dispatch => {
     dispatch({
@@ -245,7 +237,6 @@ export function signIn(user) {
 }
 
 export function signOut() {
-  // const url = 'http://localhost:3001/api/v1/logout'
   const url = `${BASEURL}/logout`
   return dispatch => {
     dispatch({
@@ -266,7 +257,6 @@ export function signOut() {
 }
 
 export function register(user) {
-  // const url = 'http://localhost:3001/api/v1/signup'
   const url = `${BASEURL}/signup`
   return dispatch => {
     dispatch({
