@@ -30,6 +30,7 @@ class MyPage extends Component {
     this.setState({
       ...this.state,
       user: {
+        ...this.state.user,
         username: user.username,
         email: user.email,
         image: user.image
