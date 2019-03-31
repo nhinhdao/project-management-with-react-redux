@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link, Redirect, Switch} from 'react-router-dom';
-import { getAllUsers, signOut, getProject, getCurrentUser } from '../actions/APIsearch';
+import { getAllUsers, signOut, getCurrentUser } from '../actions/APIsearch';
 import { Sidebar, Menu, Icon, Image } from 'semantic-ui-react';
 import projectmanagementPane from '../images/projectmanagementPane.png';
 import NewProject from './NewProject';
@@ -36,7 +36,7 @@ class Homepage extends Component {
   }
 
   componentDidMount() {
-    const id = localStorage.getItem("userID")
+    const id = localStorage.getItem("userID");
     this.props.getCurrentUser(id);
     this.props.getAllUsers();
   }
@@ -76,7 +76,6 @@ const mapDispatchToProps = dispatch => {
   return {
     getAllUsers: () => dispatch(getAllUsers()),
     signOut: () => dispatch(signOut()),
-    getProject: id => dispatch(getProject(id)),
     getCurrentUser: id => dispatch(getCurrentUser(id))
   }
 }

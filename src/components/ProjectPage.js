@@ -80,7 +80,7 @@ class ProjectPage extends Component {
             { (project.owner.id === parseInt(localStorage.getItem("userID"))) && 
             <React.Fragment>
               <Link to={`/editprojects/${project.id}`} onClick={this.close}><Button positive>Edit</Button></Link> 
-              <Button negative  onClick={() => this.handleDelete(project.id)}>Delete</Button>
+              <Button negative onClick={() => this.handleDelete(project.id)}>Delete</Button>
             </React.Fragment>}
             <Link to="/projects"><Button>Close</Button></Link>
           </Modal.Actions>

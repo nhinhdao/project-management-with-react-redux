@@ -18,7 +18,6 @@ class MyPage extends Component {
       updateAccount: false,
       errors: false
     };
-    this.baseState = this.state;
     this.handleClick=this.handleClick.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -35,7 +34,18 @@ class MyPage extends Component {
         email: user.email,
         image: user.image
       }
-    })
+    });
+    this.baseState = {
+      user: {
+        username: user.username,
+        email: user.email,
+        password: '',
+        password_confirmation: '',
+        image: user.image,
+      },
+      updateAccount: false,
+      errors: false
+    };
   }
 
   handleCancel(){

@@ -3,7 +3,7 @@ import { signIn, register } from '../actions/APIsearch';
 import welcomePage from '../images/welcomePage.png';
 import SignInForm from '../containers/SignInForm';
 import RegisterForm from '../containers/RegisterForm';
-import { Image, Grid, Header,  Segment } from 'semantic-ui-react';
+import { Image, Grid, Header,  Segment, Container} from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import {Redirect} from 'react-router-dom';
 
@@ -46,11 +46,10 @@ class WelcomePage extends Component {
       return <Redirect to='/'/>;
     }
     return (
-      <div>
-        <Grid centered columns={2}>
+      <Grid centered columns={2}>
           <Grid.Row></Grid.Row><Grid.Row></Grid.Row>
           <Grid.Row>
-            <Grid.Column width={7}>
+            <Grid.Column width={6}>
               <Image size='big' centered src={welcomePage} alt='Project Management Logo'/>
             </Grid.Column>
           </Grid.Row>
@@ -69,7 +68,6 @@ class WelcomePage extends Component {
             </Grid.Column>
           </Grid.Row>
         </Grid>
-      </div>
     );
   }
 }
