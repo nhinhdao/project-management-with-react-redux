@@ -31,13 +31,11 @@ class Homepage extends Component {
     this.props.history.push('/login');
   };
   
-  getSingleProject(id){
-    this.props.getProject(id)
-  }
-
   componentDidMount() {
     const id = localStorage.getItem("userID");
-    this.props.getCurrentUser(id);
+    if (id){
+      this.props.getCurrentUser(id);
+    }
     this.props.getAllUsers();
   }
 

@@ -3,7 +3,7 @@ import { signIn, register } from '../actions/APIsearch';
 import welcomePage from '../images/welcomePage.png';
 import SignInForm from '../containers/SignInForm';
 import RegisterForm from '../containers/RegisterForm';
-import { Image, Grid, Header,  Segment, Container} from 'semantic-ui-react';
+import { Image, Grid, Header,  Segment} from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import {Redirect} from 'react-router-dom';
 
