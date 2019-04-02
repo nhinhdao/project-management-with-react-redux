@@ -1,8 +1,24 @@
-/* body, html {
-  height: auto;
-} */
+#root{
+  height: 100%;
+}
 
-img.ui.image{
+div.App{
+  height: 100%;
+}
+
+div.App-body {
+  display: table;
+  height: 100%;
+  width: 100%;
+}
+
+#form-login {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+
+div.segment img.ui.image{
   max-width: 200px;
   max-height: 200px;
 }

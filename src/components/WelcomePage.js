@@ -46,8 +46,8 @@ class WelcomePage extends Component {
       return <Redirect to='/'/>;
     }
     return (
-      <Grid centered columns={2}>
-          <Grid.Row></Grid.Row><Grid.Row></Grid.Row>
+      <div className='App-body'>
+        <Grid centered columns={2} id='form-login'>
           <Grid.Row>
             <Grid.Column width={6}>
               <Image size='big' centered src={welcomePage} alt='Project Management Logo'/>
@@ -68,6 +68,7 @@ class WelcomePage extends Component {
             </Grid.Column>
           </Grid.Row>
         </Grid>
+      </div>
     );
   }
 }
