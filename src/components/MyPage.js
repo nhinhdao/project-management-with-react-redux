@@ -79,7 +79,7 @@ class MyPage extends Component {
         <Segment raised>
           <Header as='h1' color='blue'>My Page</Header>
           <hr/>
-          <Label as='a' color='red' ribbon>Overview</Label>
+          <Label color='red' ribbon>Overview</Label>
           <span>Account Details</span>
           <Image src={this.props.user.image}/>
           <Segment color='blue'>

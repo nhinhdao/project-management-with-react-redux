@@ -128,7 +128,7 @@ class ProjectForm extends Component {
             <Segment>
               <Header as="h3" color="blue" textAlign="center">Project</Header> <hr />
               <Header as="h4">Owner</Header>
-              <Label as='a' image><img src={project.owner.image} alt='img'/>{project.owner.username}</Label>
+              <Label image><img src={project.owner.image} alt='img'/>{project.owner.username}</Label>
               <br/><br/>
               <Form onSubmit={this.handleSubmit}>
                 <Form.Field required>
@@ -165,7 +165,7 @@ class ProjectForm extends Component {
               <Segment secondary>
                 <Header as="h3" color="blue" textAlign="center">Review</Header> <hr />
                 <Header as="h4">Owner</Header>
-                <Label as='a' image><img src={project.owner.image} alt='img'/>{project.owner.username}</Label>
+                <Label image><img src={project.owner.image} alt='img'/>{project.owner.username}</Label>
                 <Header as="h4">Title</Header>
                 <p>{project.title}</p>
                 <Header as="h4">Description</Header>

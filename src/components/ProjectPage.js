@@ -46,7 +46,7 @@ class ProjectPage extends Component {
           <Modal.Content image>
             <Modal.Description>
               <Header as="h4">Owner</Header>
-              <Label as='a' image><img src={project.owner.image} alt='img'/>{project.owner.username}</Label>
+              <Label image><img src={project.owner.image} alt='img'/>{project.owner.username}</Label>
               <Header as="h4">Description</Header>
               <p>{project.description}</p>
               <Form>
