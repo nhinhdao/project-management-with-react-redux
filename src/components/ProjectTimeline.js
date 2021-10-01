@@ -34,8 +34,8 @@ class ProjectTimeline extends Component {
         sidebarContent={<h3>Project</h3>}
         itemRenderer={this.itemRenderer}
         itemHeightRatio={0.7}
-        defaultTimeStart={moment()}
-        defaultTimeEnd={moment().add(1, "years")}
+        defaultTimeStart={moment().startOf('month')}
+        defaultTimeEnd={moment().add(2, "months")}
         lineHeight={35}/>
     )
 
